@@ -41,3 +41,10 @@ def seller_view(request, seller_id):
 def sellers_list(request):
     sellers = Seller.objects.all()
     return render(request, 'admin_panel/sellers.html', {'sellers': sellers})
+
+def toggle_seller_status(request, seller_id):
+    seller = get_object_or_404(Seller, id=seller_id)
+    user = seller.user
+    user.is_active = not user.is_active
+    user.save()
+    return redirect('sellers-list')

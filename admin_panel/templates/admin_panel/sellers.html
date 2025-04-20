@@ -65,9 +65,9 @@
         <td class="px-3 py-2 font-semibold leading-snug">{{ seller.business_name }}</td>
         <td class="px-3 py-2 font-normal">{{ seller.business_type }}</td>
         <td class="px-3 py-2">
-          <form method="post" action="" class="inline-block">
+          <form method="post" action="{% url 'toggle-seller' seller.id %}" class="inline-block">
             {% csrf_token %}
-            {% if seller.is_active %}
+            {% if seller.user.is_active %}
               <button class="bg-[#319F43] text-white text-xs rounded-full px-3 py-1 w-[80px]">Active</button>
             {% else %}
               <button class="bg-[#E33629] text-white text-xs rounded-full px-3 py-1 w-[80px]">Deactive</button>
