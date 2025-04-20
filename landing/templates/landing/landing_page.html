@@ -65,8 +65,8 @@
         </form>
 
         <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-teal-700"> <a href="./index.html"
-                class="hover:underline">Home</a> <a href="./register_page.html" class="hover:underline">Become a seller</a> <a href="#"
-                class="hover:underline">Become a delivery agent</a> <a href="./login.html" class="hover:underline">Login</a> </nav>
+                class="hover:underline">Home</a> <a href="{% url 'seller_register' %}" class="hover:underline">Become a seller</a> <a href="#"
+                class="hover:underline">Become a delivery agent</a> <a href="{% url 'login' %}" class="hover:underline">Login</a> </nav>
     </header>
     <main class="px-4 sm:px-6 md:px-10 max-w-[1200px] mx-auto mt-6 mb-16"> <!-- Banner -->
         <!-- slider -->
