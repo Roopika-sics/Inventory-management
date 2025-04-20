@@ -78,12 +78,11 @@
         
           <span class="text-black">or</span>
         
-          <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="reject">
-            <button type="submit" class="bg-red-600 text-white rounded-md px-6 py-2 hover:bg-red-700 transition">
+          <a href="{% url 'seller_reject_reason' seller.id %}">
+            <button type="button" class="bg-red-600 text-white rounded-md px-6 py-2 hover:bg-red-700 transition">
               Reject
             </button>
+          </a>
           </form>
            </div>
   </div>

@@ -1,0 +1,72 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+</aside>
+
+<!-- Main content -->
+<main class="flex-1 p-6">
+  <header
+    class="flex flex-col sm:flex-row justify-between items-center border-b border-gray-300 pb-2 mb-8"
+  >
+    <h1 class="text-[#4a7a87] font-semibold text-lg mb-3 sm:mb-0">
+      Welcome user !
+    </h1>
+    <form class="w-full sm:w-80">
+      <label for="search" class="sr-only">Search</label>
+      <div
+        class="flex items-center border border-[#4a7a87] rounded-full px-4 py-1 text-[#4a7a87]"
+      >
+        <i class="fas fa-search text-[#4a7a87]"></i>
+        <input
+          id="search"
+          type="search"
+          placeholder="Search"
+          class="flex-grow bg-transparent outline-none text-sm ml-2"
+        />
+      </div>
+    </form>
+  </header>
+
+  <section>
+    <h2
+      class="text-[#4a7a87] font-semibold text-xl text-center mb-6"
+      style="text-transform: lowercase;"
+    >
+      sellers
+    </h2>
+    <div class="overflow-x-auto">
+      <table
+        class="min-w-full border border-[#4a7a87] rounded-lg text-sm text-left"
+      >
+        <thead>
+          <tr class="text-[#164a5a] font-semibold text-center border-b border-[#4a7a84]">
+            <th class="px-3 py-2 min-w-[70px]">Sl no</th>
+            <th class="px-3 py-2 min-w-[60px]">Seller pic</th>
+            <th class="px-3 py-2 min-w-[90px]">Full name</th>
+            <th class="px-3 py-2 min-w-[110px]">Email id</th>
+            <th class="px-3 py-2 min-w-[100px]">Phone Number</th>
+      
+          </tr>
+        </thead>
+<tbody class="text-black text-center">
+    {% for buyer in buyers %}
+      <tr class="border-b border-[#4a7a84]">
+        <td class="px-3 py-2 font-normal">{{ forloop.counter }}</td>
+        <td class="px-3 py-2 flex justify-center">
+          <div class="w-8 h-8 rounded-full bg-[#4a7a84] text-white flex items-center justify-center font-semibold">
+            {{ buyer.user.username|first|upper }}
+          </div>
+        </td>
+        <td class="px-3 py-2 font-normal">{{ buyer.user.username }}</td>
+        <td class="px-3 py-2 font-normal leading-snug">{{ buyer.user.email }}</td>
+        <td class="px-3 py-2 font-normal">{{ buyer.phone_number }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+</div>
+</section>
+</main>
+</div>
+  {% endblock content %}

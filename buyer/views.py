@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect
 from accounts.models import User
 from .models import Buyer
 from django.contrib import messages
+from products.models import Product
+from categories.models import Category
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 # Create your views here.
 
 def buyer_register(request):
@@ -30,3 +34,10 @@ def buyer_register(request):
     
     return render(request, 'buyer/buyer_register.html')
 
+
+@login_required
+@never_cache
+def buyer_home(request):
+    smartphones = Product.objects.filter(category__name='Smart Phone')
+    categories = Category.objects.all()
+    return render(request, 'buyer/buyer_home.html', {'smartphones': smartphones, 'categories': categories})
