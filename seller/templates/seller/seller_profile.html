@@ -1,0 +1,16 @@
+{% extends 'seller_base.html' %}
+
+{% block content %}
+</aside>
+<main class="flex-1 p-6">
+        
+    <h2>Seller Profile</h2>
+    <p><strong>Name:</strong> {{ seller.full_name }}</p>
+    <p><strong>Email:</strong> {{ seller.user.email }}</p>
+    <p><strong>Phone Number:</strong> {{ seller.phone_number }}</p>
+    <p><strong>Documents:</strong><a href="{{ seller.validation_document.url }}">view</a> </p> <br>
+
+    <a href="{% url 'edit-seller-profile' %}">Edit Profile</a>
+</main>
+</div>
+{% endblock %}

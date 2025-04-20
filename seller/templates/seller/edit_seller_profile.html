@@ -1,0 +1,42 @@
+
+{% extends 'seller_base.html' %}
+
+{% block content %}
+</aside>
+<main class="flex-1 p-6">
+    <h2>Edit Seller Profile</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label>Full Name:</label>
+        <input type="text" name="full_name" value="{{ seller.full_name }}"><br>
+
+        <label>Email:</label>
+        <input type="email" name="email" value="{{ seller.email }}"><br>
+
+        <label>Phone Number:</label>
+        <input type="text" name="phone_number" value="{{ seller.phone_number }}"><br>
+
+        <label>Business Name:</label>
+        <input type="text" name="business_name" value="{{ seller.business_name }}"><br>
+
+        <label>Business Type:</label>
+        <input type="text" name="business_type" value="{{ seller.business_type }}"><br>
+
+        <label>Business Address:</label>
+        <textarea name="business_address">{{ seller.business_address }}</textarea><br>
+
+        <label>Registration Number:</label>
+        <input type="text" name="registration_number" value="{{ seller.registration_number }}"><br>
+
+        <label>Validation Document (PDF/Image):</label>
+        {% if seller.validation_document %}
+            <p>Current: <a href="{{ seller.validation_document.url }}" target="_blank">View</a></p>
+        {% endif %}
+        <input type="file" name="validation_document"><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+</main>
+
+{% endblock %}

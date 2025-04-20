@@ -1,0 +1,83 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-black">
+    <div class="flex h-[100vh] border border-t-0 border-b-0 border-l-0 ">
+        <!-- Sidebar -->
+        <aside class="w-64 flex flex-col border-r border-[#4a7a82]">
+            <div class="flex items-center justify-start px-4 py-4 "> <button aria-label="Back"
+                    class="text-black text-2xl font-bold"> <i class="fas fa-arrow-left"></i> </button> </div>
+            <div class="flex flex-col items-center py-6 relative">
+                <div class="relative w-20 h-20 mx-auto"> <!-- Container with explicit size and auto margins -->
+                    <!-- Top half-circle border (centered) -->
+                    <div class="absolute top-0 left-0 w-full h-full rounded-full border-t-2 border-[#4C888E] border-l-0 border-r-0 border-b-0"></div>
+                    
+                    <!-- Bottom half-circle border (centered) -->
+                    <div class="absolute top-0 left-0 w-full h-full rounded-full border-b-2 border-[#4C888E] border-t-0 border-l-0 border-r-0"></div>
+                    
+                    <!-- Centered profile icon -->
+                    <div class="absolute inset-0 flex items-center justify-center">
+                      <div class="w-16 h-16 rounded-full bg-[#4C888E] flex items-center justify-center">
+                        <i class="fas fa-user-circle text-black text-3xl"></i>
+                      </div>
+                    </div>
+                  </div>
+                <p class="mt-4 text-center text-sm">user !</p>
+                <p class="text-center text-xs mt-1">user1234@gmail.com</p>
+            </div>
+            <!-- Include Lucide Icons via CDN -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<nav class="flex flex-col px-6 py-4 space-y-6 text-sm font-normal text-gray-700">
+  <a href="#" class="flex items-center space-x-3 font-semibold text-[#4a7a82]">
+    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+    <span>Dashboard</span>
+  </a>
+  <a href="#" class="flex items-center space-x-3 hover:text-[#4a7a82]">
+    <i data-lucide="circle-user" class="w-5 h-5"></i>
+    <span>Profile</span>
+  </a>
+  <a href="#" class="flex items-center space-x-3 hover:text-[#4a7a82]">
+    <i data-lucide="users" class="w-5 h-5"></i>
+    <span>My products</span>
+  </a>
+  <a href="#" class="flex items-center space-x-3 hover:text-[#4a7a82]">
+    <i data-lucide="users" class="w-5 h-5"></i>
+    <span>Orders</span>
+  </a>
+  <a href="" class="flex items-center space-x-3 hover:text-[#4a7a82]">
+    <i data-lucide="users" class="w-5 h-5"></i>
+    <span>Best selling products</span>
+  </a>
+  <a href="{% url 'logout' %}" class="flex items-center space-x-3 hover:text-[#4a7a82]">
+    <i data-lucide="log-out" class="w-5 h-5"></i>
+    <span>Log out</span>
+  </a>
+</nav>
+
+<script>
+  lucide.createIcons();
+</script>
+
+{% block content %}
+
+{% endblock %}
+
+
+    
+</body>
+
+</html>

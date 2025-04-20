@@ -15,11 +15,10 @@ def user_login(request):
         if user is not None:
             login(request, user)
 
-            # Redirect based on user_type
             if user.user_type == 'admin':
                 return redirect('admin_dashboard')
             elif user.user_type == 'seller':
-                return redirect('landing_page')
+                return redirect('seller_home')
             elif user.user_type == 'user':
                 return redirect('user_dashboard')
             elif user.user_type == 'volunteer':
