@@ -21,8 +21,8 @@ def user_login(request):
                 return redirect('seller_home')
             elif user.user_type == 'user':
                 return redirect('user_dashboard')
-            elif user.user_type == 'volunteer':
-                return redirect('volunteer_dashboard')
+            elif user.user_type == 'buyer':
+                return redirect('landing_page')
             else:
                 return redirect('home')
         else:
