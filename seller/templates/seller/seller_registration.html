@@ -1,0 +1,103 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Sentimart Registration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <header class="bg-[#3a7a7f] h-10 w-full"></header>
+    <main class="flex flex-col md:flex-row justify-center items-start flex-grow p-6 md:p-12 gap-12 max-w-7xl mx-auto w-full">
+      <!-- Left side with logo above section -->
+      <div class="flex flex-col items-center md:items-start max-w-md w-full relative mt-12">
+        <!-- Centered logo above the shadowed section -->
+        <div class="absolute -top-20 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-[calc(50%-100px)] mt-10">
+          <img
+            alt="Sentimart logo"
+            height="70"
+            width="200"
+            src="https://s3-alpha-sig.figma.com/img/6996/d31d/ef707408300a4c2cee74dc38fbbcda79?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=MhL7E2EtM8Ewth9PND0syJBGLIRf7VJ70a6OtTyPWgl5xC1IBC16RfjCR4Bgout8xQYAnOrXE0Cn5T5o88-VDEf1415QMPLysFTzs9VmQb1KTU5F9EDvvIO6GIk6LB9HNxtInsoaxfoI7YmRvaEjKjRb6uX0lRRtmQlaN487ThSLLUEfg9KgNFAGqjU6-xlwGR-kAi1fQ8iBOfBaTXMMD1GYX89RdelzTh0A8FS0OkE4OG15tTskGjh8KPOl-QKAwBVzFA3esQSHATh4Q6yBSD~tUnVo57ud~1fu-4ag9DCEEnpmltgdknimvCMFhhQae7JBdXdOq9HARZBIHC~N-w__"
+          />
+        </div>
+
+        <!-- Content Box -->
+        <section class="flex flex-col items-center md:items-start bg-white rounded-2xl shadow-[0_0_8px_rgba(0,0,0,0.15)] p-8 md:p-12 w-full min-h-[630px] mt-[130px]">
+          <h2 class="text-[#5a9ea1] text-2xl font-semibold mb-2 self-start mt-6">Hello !</h2>
+          <p class="text-xs leading-tight mb-12 self-start">
+            A Very warm Welcome.<br />
+            It is lovely to have you among us!<br />
+            Please Register to Continue...
+          </p>
+          <img
+            alt="3D illustration of a man sitting on a chair using a laptop, thinking"
+            class="w-80 h-auto mt-auto"
+            height="300"
+            width="260"
+            src="https://s3-alpha-sig.figma.com/img/f51a/bb88/0dd294a3727853bec65ce164ebf59451?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=b3fo19fI7sez70e62uJqwMZrXvU9VYzzI-qqBx5BjF3px7HytveYFn6OwYuiaguMC2H8naTBxnKhYl0Rc1~RJHlNZO4FmR--gTPu4dG~0M9B6VQ9reD~h1FEX0~TJYAzTTuGCDqntwL~~qyN3YFZGN8l9IqBFU-Kx9ogVRCBSPVtqPs9OQkGKW4RtkZ6bCQWZ4ZyPAAC8V-O2G416F4k1WBnl68IZdVBkFlnXpAGTzQ0wYx70kMFO-PsWH3NpBnydfwJ~Herkwd~NrRyuoKm5q7wjXOzBvaNvMu8E1boumyrFhoPTLpFadEJUdWI4SVbCF41MwgICr2Sx7KHzt6kHg__"
+          />
+        </section>
+      </div>
+
+      <!-- Right side -->
+      <section class="w-full max-w-md">
+        <h3 class="text-lg font-semibold mb-4 text-center">Registration</h3>
+        <div class="flex flex-col items-center mb-6">
+          <img
+            alt="User icon"
+            class="mb-1"
+            height="60"
+            width="60"
+            src="https://iili.io/31MDxg2.png"
+          />
+        </div>
+
+        <!-- Notice the method, enctype and csrf token for file upload -->
+        <form class="flex flex-col gap-4" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <label class="text-xs" for="fullname">Full Name</label>
+          <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="fullname" name="fullname" placeholder="Enter your full name" type="text" />
+
+          <label class="text-xs" for="email">Email Address</label>
+          <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="email" name="email" placeholder="Enter your mail id" type="email" />
+
+          <label class="text-xs" for="password">Password</label>
+          <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="password" name="password" placeholder="Enter your password" type="password" />
+
+          <label class="text-xs" for="phone">Phone Number</label>
+          <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="phone" name="phone" placeholder="Enter your phone number" type="tel" />
+
+          <label class="text-xs" for="displayname">Business Name</label>
+          <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="displayname" name="displayname" placeholder="Enter your business name" type="text" />
+
+          <label class="text-xs" for="businesstype">Business Type</label>
+          <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="businesstype" name="businesstype" placeholder="Enter your business type" type="text" />
+
+          <label class="text-xs" for="businessaddress">Business Address</label>
+          <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="businessaddress" name="businessaddress" placeholder="Enter your business address" type="text" />
+
+          <label class="text-xs" for="registernumber">Registration Number</label>
+          <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="registernumber" name="registernumber" placeholder="Enter your registration number" type="text" />
+
+          <label class="text-xs" for="validationdoc">Validation Document</label>
+          <input class="border border-gray-300 rounded px-2 py-1" id="validationdoc" name="validationdoc" type="file" />
+
+          <!-- Replace the anchor with a submit button -->
+          <button type="submit" class="mt-4 bg-[#5a9ea1] text-white rounded-md py-2 px-4 text-sm hover:bg-[#4a7a7f] transition-colors">
+            Sign up
+          </button>
+        </form>
+
+        <p class="text-xs text-center mt-4">
+          Already a User?
+          <a class="text-[#5a9ea1] hover:underline" href="{% url 'login' %}">Log In</a>
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

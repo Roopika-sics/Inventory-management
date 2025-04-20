@@ -1,0 +1,46 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login - Sentimart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-white min-h-screen flex flex-col">
+    <header class="bg-[#4a8287] h-12 w-full"></header>
+    <main class="flex flex-1 justify-center items-center px-6">
+        <div class="max-w-6xl w-full flex flex-col md:flex-row items-center md:items-start gap-10 md:gap-0.5">
+            <div class="flex justify-center md:justify-start w-full md:w-1/2"> <img 
+                    src="https://s3-alpha-sig.figma.com/img/6996/d31d/ef707408300a4c2cee74dc38fbbcda79?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=MhL7E2EtM8Ewth9PND0syJBGLIRf7VJ70a6OtTyPWgl5xC1IBC16RfjCR4Bgout8xQYAnOrXE0Cn5T5o88-VDEf1415QMPLysFTzs9VmQb1KTU5F9EDvvIO6GIk6LB9HNxtInsoaxfoI7YmRvaEjKjRb6uX0lRRtmQlaN487ThSLLUEfg9KgNFAGqjU6-xlwGR-kAi1fQ8iBOfBaTXMMD1GYX89RdelzTh0A8FS0OkE4OG15tTskGjh8KPOl-QKAwBVzFA3esQSHATh4Q6yBSD~tUnVo57ud~1fu-4ag9DCEEnpmltgdknimvCMFhhQae7JBdXdOq9HARZBIHC~N-w__"
+                    alt="Sentimart logo with stylized wave design above the text" class="w-60 mt-24 ml- h-auto" /></div>
+            <form class="w-full max-w-md" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <h2 class="text-black text-2xl font-semibold mb-1 text-center md:text-left"> Log into your account </h2>
+                <p class="text-black text-sm mb-6 text-center md:text-left"> Welcome back! enter Your details </p>
+                <label for="username" class="block text-xs mb-1 text-black">Username</label>
+                <div class="relative mb-4"> <input id="username" name="username" type="text" placeholder="Enter your username"
+                        class="w-full border border-[#4a8287] rounded-md px-4 py-2 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-[#4a8287]" />
+                </div> <label for="password" class="block text-xs mb-1 text-black">Password</label>
+                <div class="relative mb-8"> <input id="password" name="password" type="password"
+                        placeholder="Enter password"
+                        class="w-full border border-[#4a8287] rounded-md px-4 py-2 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-[#4a8287]" />
+                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"> <i
+                            class="fas fa-eye-slash"></i> </span> </div>
+                <button type="submit" class="w-full bg-[#4a8287] text-white py-3 rounded-lg text-base font-normal hover:bg-[#3b6a6f] transition-colors">
+                    Sign in
+                </button>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>
