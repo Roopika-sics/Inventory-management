@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from seller.models import Seller
 from buyer.models import Buyer
+from categories.models import Category
 # Create your views here.
 
 
@@ -63,3 +64,12 @@ def toggle_seller_status(request, seller_id):
 def buyers_list(request):
     buyers = Buyer.objects.all()
     return render(request, 'admin_panel/buyers.html', {'buyers': buyers})
+
+def add_category(request):
+    categories = Category.objects.all()
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        Category.objects.create(name=name, image=image)
+        return redirect('add_category')
+    return render(request, 'admin_panel/add_category.html', {'categories': categories})

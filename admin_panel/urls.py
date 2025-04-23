@@ -10,6 +10,7 @@ urlpatterns = [
     path('buyers/', views.buyers_list, name='buyers-list'),
     path('sellers/toggle/<int:seller_id>/', views.toggle_seller_status, name='toggle-seller'),
     path('seller/reject/<int:seller_id>/', views.seller_reject_reason, name='seller_reject_reason'),
+    path('add_category/', views.add_category, name='add_category'),
 
 
 ]
