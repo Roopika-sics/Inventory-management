@@ -1,0 +1,115 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50">
+
+  <!-- Center the form -->
+  <div class="flex items-center justify-center min-h-screen">
+    <form class="max-w-sm w-full rounded-xl border border-gray-200 p-6 relative bg-white shadow-lg" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <button onclick="window.history.back()" aria-label="Close"
+        class="absolute top-4 right-4 text-black text-lg font-bold leading-none focus:outline-none" type="button">
+        ×
+      </button>
+
+      <div class="flex items-center space-x-4 mb-6">
+        <div
+          class="flex items-center justify-center w-14 h-14 rounded-full bg-[#4B7B82] text-white font-semibold text-lg">
+          J
+        </div>
+        <div>
+          <h2 class="text-[#4B7B82] text-xl font-medium leading-tight">John jerin</h2>
+          <p class="text-black text-sm leading-tight">johnjerin@gmail.com</p>
+        </div>
+      </div>
+
+      <table class="w-full border border-[#4B7B82] rounded-lg text-sm text-black">
+        <tbody>
+          <tr class="border-b border-[#4B7B82]">
+            <td class="py-2 px-3 font-normal text-left w-1/2">Username</td>
+            <td class="py-2 px-3 font-normal text-right w-1/2">
+              <input type="text" class="w-full border border-[#4B7B82] rounded p-2" name="username"
+                value="{{ seller.user.username }}" />
+            </td>
+          </tr>
+          <tr class="border-b border-[#4B7B82]">
+            <td class="py-2 px-3 font-normal text-left w-1/2">Email</td>
+            <td class="py-2 px-3 font-normal text-right w-1/2">
+              <input type="text" class="w-full border border-[#4B7B82] rounded p-2" name="email"
+                value="{{ seller.user.email }}" />
+            </td>
+          </tr>
+          <tr class="border-b border-[#4B7B82]">
+            <td class="py-2 px-3 font-normal text-left w-1/2">Phone number</td>
+            <td class="py-2 px-3 font-normal text-right w-1/2">
+              <input type="text" class="w-full border border-[#4B7B82] rounded p-2" name="phone_number"
+                value="{{ seller.phone_number }}" />
+            </td>
+          </tr>
+          <tr class="border-b border-[#4B7B82]">
+            <td class="py-2 px-3 font-normal text-left">Display name</td>
+            <td class="py-2 px-3 font-normal text-right">
+              <input type="text" class="w-full border border-[#4B7B82] rounded p-2" name="business_name"
+                value="{{ seller.business_name }}" />
+            </td>
+          </tr>
+          <tr class="border-b border-[#4B7B82]">
+            <td class="py-2 px-3 font-normal text-left">Business Type</td>
+            <td class="py-2 px-3 font-normal text-right">
+              <input type="text" class="w-full border border-[#4B7B82] rounded p-2" name="business_type"
+                value="{{ seller.business_type }}" />
+            </td>
+          </tr>
+          <tr class="border-b border-[#4B7B82]">
+            <td class="py-2 px-3 font-normal text-left">Business address</td>
+            <td class="py-2 px-3 font-normal text-right">
+              <input type="text" class="w-full border border-[#4B7B82] rounded p-2" name="business_address"
+                value="{{ seller.business_address }}" />
+            </td>
+          </tr>
+          <tr class="border-b border-[#4B7B82]">
+            <td class="py-2 px-3 font-normal text-left">Registration Number</td>
+            <td class="py-2 px-3 font-normal text-right">
+              <input type="text" class="w-full border border-[#4B7B82] rounded p-2" name="registration_number"
+                value="{{ seller.registration_number }}" />
+            </td>
+          </tr>
+          <tr>
+            <td class="py-2 px-3 font-normal text-left">Validation document</td>
+            <td class="py-2 px-3 font-normal text-right">
+              {% if seller.validation_document %}
+              <p>Current: <a href="{{ seller.validation_document.url }}" target="_blank">View</a></p>
+              {% endif %}
+              <input type="file" name="validation_document"
+                class="w-full border border-[#4B7B82] rounded p-2" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="mt-6 border border-[#4B7B82] rounded-lg p-4 flex justify-center">
+        <button type="submit"
+          class="flex items-center space-x-2 bg-[#4B7B82] text-white text-sm font-light px-6 py-2 rounded">
+          <i class="fas fa-sync-alt"></i>
+          <span>Update</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+</body>
+
+</html>

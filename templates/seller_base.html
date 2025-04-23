@@ -42,11 +42,11 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <nav class="flex flex-col px-6 py-4 space-y-6 text-sm font-normal text-gray-700">
-  <a href="#" class="flex items-center space-x-3 font-semibold text-[#4a7a82]">
+  <a href="{% url 'seller_dashboard' %}" class="flex items-center space-x-3 font-semibold text-[#4a7a82]">
     <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
     <span>Dashboard</span>
   </a>
-  <a href="#" class="flex items-center space-x-3 hover:text-[#4a7a82]">
+  <a href="{% url 'seller_profile' %}" class="flex items-center space-x-3 hover:text-[#4a7a82]">
     <i data-lucide="circle-user" class="w-5 h-5"></i>
     <span>Profile</span>
   </a>

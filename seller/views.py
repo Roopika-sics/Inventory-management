@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Seller
 from accounts.models import User
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
 def seller_registration(request):
     if request.method == "POST":
@@ -38,22 +39,27 @@ def seller_registration(request):
     return render(request, 'seller/seller_registration.html')
 
 @login_required
-def seller_home(request):
-    return render(request, 'seller/seller_home.html')
+@never_cache
+def seller_dashboard(request):
+    return render(request, 'seller/seller_dashboard.html')
 
 @login_required
+@never_cache
 def seller_profile(request):
     seller = request.user.seller_profile
-    print('dsadas',seller)
-    return render(request, 'seller/seller_profile.html', {'seller': seller})
+    return render(request, 'seller/seller_home.html', {'seller': seller})
+
+
 
 @login_required
+@never_cache
 def edit_seller_profile(request):
     seller = request.user.seller_profile
 
     if request.method == 'POST':
-        seller.full_name = request.POST.get('full_name')
-        seller.email = request.POST.get('email')
+        seller.user.username = request.POST.get('username')
+        seller.user.email = request.POST.get('email')
+        seller.user.save()
         seller.phone_number = request.POST.get('phone_number')
         seller.business_name = request.POST.get('business_name')
         seller.business_type = request.POST.get('business_type')
@@ -64,6 +70,6 @@ def edit_seller_profile(request):
             seller.validation_document = request.FILES.get('validation_document')
 
         seller.save()
-        return redirect('seller-profile')
+        return redirect('seller_profile')
 
-    return render(request, 'seller/edit_seller_profile.html', {'seller': seller})
+    return render(request, 'seller/edit_seller_pro.html', {'seller': seller})

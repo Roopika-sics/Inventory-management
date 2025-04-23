@@ -18,7 +18,7 @@ def user_login(request):
             if user.user_type == 'admin':
                 return redirect('admin_dashboard')
             elif user.user_type == 'seller':
-                return redirect('seller_home')
+                return redirect('seller_dashboard')
             elif user.user_type == 'user':
                 return redirect('user_dashboard')
             elif user.user_type == 'buyer':
