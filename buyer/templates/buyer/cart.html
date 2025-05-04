@@ -1,7 +1,6 @@
 {% extends './buyer_base.html' %}
 {% load static %}
 
-
 {% block content %}
 
 {% for message in messages %}
@@ -14,8 +13,8 @@
     </div>
 {% endfor %}
 
-<div class="container mt-5">
-  <h2 class="mb-4">Your Cart</h2>
+<div class="container my-5 p-12">
+  <h2 class="mb-4 font-bold text-center text-3xl">Your Cart</h2>
 
   {% for item in cart_items %}
     <div class="card mb-3" style="max-width: 600px;">
@@ -32,8 +31,15 @@
             <h5 class="card-title">{{ item.product.name }}</h5>
             <p class="card-text">{{ item.product.description|truncatewords:20 }}</p>
             <p class="card-text">
-              <small class="text-muted">₹{{ item.product.price }} × {{ item.quantity }} = ₹{{ item.total_price }}</small>
+              <small class="text-muted">₹{{ item.product.price }} × <span id="quantity-{{ item.id }}">{{ item.quantity }}</span> = ₹{{ item.total_price }}</small>
             </p>
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="btns">
+                    <button type="button" class="btn btn-outline-secondary btn-sm me-2" onclick="decreaseQuantity('{{ item.id }}')">-</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseQuantity('{{ item.id }}')">+</button>
+                </div>
+              <a href="{% url 'remove_cart_item' item.id %}" class="btn btn-outline-danger btn-sm">Remove</a>
+            </div>
           </div>
         </div>
       </div>
@@ -42,9 +48,67 @@
     <p>No items in your cart.</p>
   {% endfor %}
 
-  <hr>
-  <h4>Total: ₹{{ total }}</h4>
-  <a href="{% url 'place_order' %}" class="bg-blue-500 text-white px-4 py-2 rounded">Place Order</a>
+
+  <h4 class="my-6">Total: ₹{{ total }}</h4>
+  <a href="{% url 'place_order' %}" class="bg-[#079488] text-white px-4 py-2 rounded mt-4">Place Order</a>
 </div>
+
+<script>
+  function decreaseQuantity(itemId) {
+    const quantityElement = document.getElementById('quantity-' + itemId);
+    let quantity = parseInt(quantityElement.textContent);
+    if (quantity > 1) {
+      quantity--;
+      quantityElement.textContent = quantity;
+      fetch('{% url "update-cart-item" %}', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}',
+        },
+        body: JSON.stringify({
+          item_id: itemId,
+          quantity: quantity,
+        }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            console.error(data.error);
+          } else {
+            const totalElement = document.querySelector('.total');
+            totalElement.textContent = `Total: ₹${data.total}`;
+          }
+        })
+    }
+  }
+
+  function increaseQuantity(itemId) {
+    const quantityElement = document.getElementById('quantity-' + itemId);
+    let quantity = parseInt(quantityElement.textContent);
+    quantity++;
+    quantityElement.textContent = quantity;
+    fetch('{% url "update-cart-item" %}', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}',
+      },
+      body: JSON.stringify({
+        item_id: itemId,
+        quantity: quantity,
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          console.error(data.error);
+        } else {
+          const totalElement = document.querySelector('.total');
+          totalElement.textContent = `Total: ₹${data.total}`;
+        }
+      })
+  }
+</script>
 
 {% endblock %}

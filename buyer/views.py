@@ -7,6 +7,11 @@ from products.models import Product, CartItem, Order, OrderItem
 from categories.models import Category
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+import json
 # Create your views here.
 
 def buyer_register(request):
@@ -116,3 +121,40 @@ def place_order(request):
 
     total_price = sum(item.product.base_price * item.quantity for item in cart_items)
     return render(request, 'buyer/place_order.html', {'cart_items': cart_items, 'total_price': total})
+
+
+def update_cart_item(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            item_id = data.get('item_id')
+            new_quantity = data.get('quantity')
+
+            if not item_id or not new_quantity:
+                return JsonResponse({'error': 'Missing item ID or quantity'}, status=400)
+
+            cart_item = CartItem.objects.get(id=item_id, user=request.user)
+            product = cart_item.product
+
+            if new_quantity > 0 and new_quantity <= product.stock:
+                cart_item.quantity = new_quantity
+                cart_item.save()
+            else:
+                return JsonResponse({'error': 'Invalid quantity'}, status=400)
+
+    
+            cart_items = CartItem.objects.filter(user=request.user)
+            total = sum(item.product.price * item.quantity for item in cart_items)
+
+            return JsonResponse({'message': 'Quantity updated', 'total': total})
+        except CartItem.DoesNotExist:
+            return JsonResponse({'error': 'Cart item not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status=400)
+    
+def remove_cart_item(request, item_id):
+    cart_item = get_object_or_404(CartItem, id=item_id, user=request.user)
+    cart_item.delete()
+    return redirect('cart')
