@@ -1,77 +1,9 @@
-<html lang="en">
+{% extends './buyer_base.html' %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sentimart</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-    <link href="/your-path-to-fontawesome/css/brands.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <style>
-        body {
-            font-family: "Poppins", sans-serif;
-        }
-    </style>
-</head>
 
-<body class="bg-white text-gray-900 w-[100vw] h-[100vh] overflow-x-hidden">
-    <div style="width: 100vw;height: 50px;background-color: #4C888E;"></div>
-    <header class="flex items-center justify-between px-4 sm:px-6 md:px-10 py-4 border-b border-gray-200">
-        <div class="p-4 ml-6">
-            <button 
-              class="flex flex-col justify-center items-start w-10 h-10 space-y-1.5 px-2 py-2" 
-              aria-label="Toggle navigation"
-              style="background-color: #F3F9FB; border-radius: 15%;">
-              
-              <!-- Line 1 -->
-              <span class="block w-6 h-0.5 bg-gray-400 rounded transition-all duration-300"></span>
-              <!-- Line 2 -->
-              <span class="block w-5 h-0.5 bg-gray-400 rounded transition-all duration-300"></span>
-              <!-- Line 3 -->
-              <span class="block w-4 h-0.5 bg-gray-400 rounded transition-all duration-300"></span>
-            </button>
-          </div>
-          
-            <!-- Sentimart Logo and Brand Name -->
-            <div class="flex items-center space-x-2">
-                <img src="https://s3-alpha-sig.figma.com/img/6996/d31d/ef707408300a4c2cee74dc38fbbcda79?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=MhL7E2EtM8Ewth9PND0syJBGLIRf7VJ70a6OtTyPWgl5xC1IBC16RfjCR4Bgout8xQYAnOrXE0Cn5T5o88-VDEf1415QMPLysFTzs9VmQb1KTU5F9EDvvIO6GIk6LB9HNxtInsoaxfoI7YmRvaEjKjRb6uX0lRRtmQlaN487ThSLLUEfg9KgNFAGqjU6-xlwGR-kAi1fQ8iBOfBaTXMMD1GYX89RdelzTh0A8FS0OkE4OG15tTskGjh8KPOl-QKAwBVzFA3esQSHATh4Q6yBSD~tUnVo57ud~1fu-4ag9DCEEnpmltgdknimvCMFhhQae7JBdXdOq9HARZBIHC~N-w__"
-                    alt="Sentimart logo with wave design in teal and text Sentimart"
-                    class="w-[60px] h-[40px] object-contain" />
-                <span class="font-semibold text-teal-700 text-lg select-none">Sentimart</span>
-            </div>
-        
-        
-        <form
-  class="hidden sm:flex items-center border border-gray-300 rounded-full px-3 py-1 w-[450px] md:w-[450px] md:h-[50px] focus-within:ring-2 focus-within:ring-teal-500"
-  role="search" aria-label="Search for products">
+{% block content %}
 
-  <!-- Search Icon -->
-  <svg class="w-4 h-4 text-gray-500 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
-  </svg>
-
-  <!-- Search Input -->
-  <input type="search" placeholder="Search for products"
-    class="flex-grow text-sm text-gray-600 placeholder-gray-400 outline-none bg-transparent"
-    aria-label="Search for products" />
-
-  <!-- AI Button -->
-  <button type="submit" aria-label="Search"
-    class="text-teal-600 text-xs font-semibold rounded-full border border-teal-300 w-6 h-6 flex items-center justify-center ml-2">
-    AI
-  </button>
-        </form>
-
-        <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-teal-700"> 
-            <a href="#" class="hover:underline">Home</a> 
-            <a href="#" class="hover:underline">Profile</a> 
-            <a href="#" class="hover:underline">Delivery Address</a> 
-            <a href="#" class="hover:underline">Orders</a> 
-            <a href="{% url 'logout' %}" class="hover:underline">Logout</a> 
-        </nav>
-    </header>
     <main class="px-4 sm:px-6 md:px-10 max-w-[1200px] mx-auto mt-6 mb-16"> <!-- Banner -->
         <!-- slider -->
         <section class="relative rounded-xl overflow-hidden bg-teal-700 text-white max-w-full h-[140px] sm:h-[160px] md:h-[180px] lg:h-[200px]">
@@ -170,10 +102,11 @@
             <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4" role="list"
                 aria-label="Smartphones products"> <!-- Product 1 -->
                 {% for phone in smartphones %}
+                <a href="{% url 'product-detail' pk=phone.id  %}">
                 <li class="border border-gray-200 rounded-lg p-2 flex flex-col items-center text-center relative transition duration-300 hover:border-2 hover:border-[#008ECC] hover:shadow-md hover:-m-[1px]"
                     tabindex="0">
                     <div class="mb-2 w-full h-[210px] overflow-hidden flex items-center justify-center">
-                        <img src="https://s3-alpha-sig.figma.com/img/7d10/02e4/2567b84b14fb8fc96e4ab3e78ac36f10?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=uVESYs1Dvlt4V2sLtp8TmE~mZfLjvtMaVbEYhTid9JCWTIY3mLzXinW2vlWBuzvY4DQaVbtZMvAjkCYwdGzo2VULOaOs137bGQILLwShX08VjD9oAPhHnwt3T8YNQz9RL4TqBy6yni1AdItKFRHHihihXu50I1irrfx34j-ebPwvs070K9sGMhAnkzpryvHZ-7e2vil6hiXVuo-WvzXUNzTAzmjqtKKfi9MNdueWmwb8GklMuYekVmD2MzByIxPkka1jNCNCqDH7i8bRzkJlEHIM7CQPd2TxB7sr997UCKVnWNfo73HoDzFOpyFt0rAimYe-ihJr152KQqr25DJMAA__"
+                        <img src="{{ phone.image.url }}"
                             alt="Galaxy M13 smartphone front view with brown background"
                             class="w-auto h-[200px] object-contain scale-125" />
                     </div>
@@ -185,6 +118,7 @@
                         {{ phone.discount_percentage|floatformat:0 }}%<br>OFF
                     </div>
                 </li>
+                </a>
                 {% endfor %}
             </ul>
         </section> 
@@ -385,45 +319,6 @@
                 class="w-[160px] h-[160px] object-contain" />
         </section>
     </main>
-    <footer class="bg-teal-600 text-white px-6 sm:px-10 py-10">
-        <div class="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8">
-            <div>
-                <h2 class="font-bold text-xl mb-2 select-none">Sentimart</h2>
-                <p class="mb-4">Contact Us</p>
-                <div class="flex items-center space-x-3 text-xs"><i class="fa-brands fa-whatsapp"></i>
-                    <div>
-                        <p>Whats App</p>
-                        <p>98765432100</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-3 text-xs"> <i class="fas fa-phone-alt"></i>
-                    <div>
-                        <p>Call Us</p>
-                        <p>9876543219</p>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <h3 class="font-semibold underline underline-offset-4 mb-2">Most Popular Categories</h3>
-                <ul class="text-xs space-y-1 list-disc list-inside">
-                    <li>mobiles</li>
-                    <li>smart watch</li>
-                    <li>Electronics</li>
-                    <li>Home decors</li>
-                    <li>Furniture</li>
-                    <li>cosmetics</li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="font-semibold underline underline-offset-4 mb-2">Customer Services</h3>
-                <ul class="text-xs space-y-1 list-disc list-inside">
-                    <li>About Us</li>
-                    <li>Contact Us</li>
-                </ul>
-            </div>
-        </div>
-        <hr class="border-teal-400 mt-10" />
-    </footer>
-</body>
 
-</html>
+{% endblock %}
+    

@@ -47,7 +47,7 @@ def seller_dashboard(request):
 @never_cache
 def seller_profile(request):
     seller = request.user.seller_profile
-    return render(request, 'seller/seller_home.html', {'seller': seller})
+    return render(request, 'seller/seller_profile.html', {'seller': seller})
 
 
 

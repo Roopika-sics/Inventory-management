@@ -16,6 +16,7 @@ class Product(models.Model):
     model_number = models.CharField(max_length=100)
     base_price = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=10, decimal_places=2)
+    stock = models.PositiveIntegerField(default=0) 
 
     def __str__(self):
         return self.name
@@ -30,3 +31,15 @@ class Product(models.Model):
         if self.base_price > 0:
             return (self.discount / self.base_price) * 100
         return 0
+
+class CartItem(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    def total_price(self):
+        return self.product.final_price() * self.quantity
+
+    def __str__(self):
+        return f"{self.user.username} - {self.product.name} ({self.quantity})"

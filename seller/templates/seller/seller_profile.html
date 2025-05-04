@@ -1,16 +1,101 @@
 {% extends 'seller_base.html' %}
-
+{% load static %}
 {% block content %}
-</aside>
-<main class="flex-1 p-6">
-        
-    <h2>Seller Profile</h2>
-    <p><strong>Name:</strong> {{ seller.full_name }}</p>
-    <p><strong>Email:</strong> {{ seller.user.email }}</p>
-    <p><strong>Phone Number:</strong> {{ seller.phone_number }}</p>
-    <p><strong>Documents:</strong><a href="{{ seller.validation_document.url }}">view</a> </p> <br>
 
-    <a href="{% url 'edit-seller-profile' %}">Edit Profile</a>
+</aside>
+<!-- Main content -->
+<main class="flex-1 p-6 space-y-8">
+ <!-- Top banner -->
+ <section class="flex items-center justify-center gap-10 border rounded-lg p-6" style="border-color:#d1d5db">
+  <img alt="Illustration of a woman standing next to a large analytics screen with charts, graphs, and icons representing sentiment analysis" class="w-[200px] h-[140px] object-contain" height="140" src="{% static 'images/Group 225.png' %}" width="200"/>
+  <h1 class="text-teal-700 font-semibold text-xl md:text-2xl">
+   Sell online with Sentimart
+  </h1>
+ </section>
+ <!-- Profile card -->
+ <section class="max-w-4xl mx-auto border rounded-lg p-10 flex flex-col md:flex-row items-center md:items-start gap-10" style="border-color:#d1d5db">
+  <!-- Left profile info -->
+  <div class="flex flex-col items-center">
+   <div class="relative">
+    <img alt="Male avatar with glasses, short brown hair, wearing a blue shirt, inside a circular frame with a white border" class="w-[120px] h-[120px] rounded-full border border-gray-200" height="120" src="https://storage.googleapis.com/a1aa/image/92e24b1c-9b99-4545-0b29-26b8b4b020c7.jpg" width="120"/>
+    <div class="absolute bottom-0 left-0 right-0 bg-teal-700 text-white text-center font-semibold py-2 rounded-b-md" style="border-top-left-radius: 0; border-top-right-radius: 0">
+     {{ seller.user.username }}
+    </div>
+   </div>
+   <div class="bg-teal-700 text-white text-xs mt-8 border border-t-0 border-teal-700 rounded-b-md p-3 w-[220px]">
+    <p class="flex items-center gap-2 mb-1">
+     <i class="fas fa-phone-alt text-yellow-400">
+     </i>
+     {{ seller.phone_number }}
+    </p>
+    <p class="flex items-center gap-2 mb-1 break-words">
+     <i class="fas fa-envelope text-yellow-400">
+     </i>
+     {{ seller.user.email }}
+    </p>
+    <!-- <p class="flex items-center gap-2">
+     <i class="fas fa-map-marker-alt text-yellow-400">
+     </i>
+     Chennai
+    </p> -->
+   </div>
+   <a href="{% url 'edit-seller-profile' %}" class="mt-6 bg-teal-700 hover:bg-teal-800 text-white text-sm font-normal py-2 px-6 rounded flex items-center gap-2">
+    <i class="fas fa-pen">
+    </i>
+    Edit profile
+    </a>
+  </div>
+  <!-- Right profile details -->
+  <div class="flex-1">
+   <h2 class="text-teal-700 font-semibold text-2xl mb-8">
+    Profile !
+   </h2>
+   <dl class="grid grid-cols-2 gap-y-4 gap-x-10 text-gray-700 text-sm">
+    <div class="flex justify-between">
+     <dt class="font-normal">
+      Display name
+     </dt>
+     <dd class="text-teal-700">
+        {{ seller.business_name }}
+     </dd>
+    </div>
+    <!-- <div class="flex justify-between">
+     <dt class="font-normal">
+      business name
+     </dt>
+     <dd class="text-teal-700">
+      John Electronics
+     </dd>
+    </div> -->
+    <div class="flex justify-between">
+     <dt class="font-normal">
+      Business type
+     </dt>
+     <dd class="text-teal-700">
+      {{ seller.business_type }}
+     </dd>
+    </div>
+    <div class="flex justify-between">
+     <dt class="font-normal">
+      Register number
+     </dt>
+     <dd class="text-teal-700">
+      {{ seller.registration_number }}
+     </dd>
+    </div>
+    <div class="flex justify-between">
+     <dt class="font-normal">
+      validation document
+     </dt>
+     <dd class="text-teal-700 cursor-pointer">
+      <a href="{{ seller.validation_document.url }}">view</a>
+     </dd>
+    </div>
+   </dl>
+  </div>
+ </section>
 </main>
 </div>
+
+
 {% endblock %}

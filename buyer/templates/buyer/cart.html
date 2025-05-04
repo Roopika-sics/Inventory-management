@@ -1,0 +1,49 @@
+{% extends './buyer_base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+{% for message in messages %}
+    <div class="bg-{{ message.tags }}-100 border-t border-b border-{{ message.tags }}-500 text-{{ message.tags }}-700 px-4 py-3 relative" role="alert">
+        <button type="button" class="absolute top-0 right-0 px-4 py-3" onclick="this.parentElement.style.display='none';">×</button>
+        <p class="font-bold">{{ message.tags|capfirst }}</p>
+        <ul>
+            <li>{{ message }}</li>
+        </ul>
+    </div>
+{% endfor %}
+
+<div class="container mt-5">
+  <h2 class="mb-4">Your Cart</h2>
+
+  {% for item in cart_items %}
+    <div class="card mb-3" style="max-width: 600px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          {% if item.product.image %}
+            <img src="{{ item.product.image.url }}" class="img-fluid rounded-start" alt="{{ item.product.name }}">
+          {% else %}
+            <img src="{% static 'default-product.png' %}" class="img-fluid rounded-start" alt="No image">
+          {% endif %}
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.product.name }}</h5>
+            <p class="card-text">{{ item.product.description|truncatewords:20 }}</p>
+            <p class="card-text">
+              <small class="text-muted">₹{{ item.product.price }} × {{ item.quantity }} = ₹{{ item.total_price }}</small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>No items in your cart.</p>
+  {% endfor %}
+
+  <hr>
+  <h4>Total: ₹{{ total }}</h4>
+</div>
+
+{% endblock %}
