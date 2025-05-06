@@ -1,0 +1,42 @@
+<form class="flex flex-col gap-4" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label class="text-xs" for="fullname">Full Name</label>
+    <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="fullname" name="fullname" placeholder="Enter your full name" type="text" />
+
+    <label class="text-xs" for="email">Email Address</label>
+    <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="email" name="email" placeholder="Enter your mail id" type="email" />
+
+    <label class="text-xs" for="password">Password</label>
+    <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="password" name="password" placeholder="Enter your password" type="password" />
+
+    <label class="text-xs" for="phone">Phone Number</label>
+    <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="phone" name="phone" placeholder="Enter your phone number" type="tel" pattern="[0-9]{10}"/>
+
+    <label class="text-xs" for="city">City</label>
+    <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="city" name="city" placeholder="Enter your city" type="text">
+
+    <label class="text-xs" for="city">Location</label>
+    <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="location" name="location" placeholder="Enter your location" type="text">
+
+    <label class="text-xs" for="pincode">Pincode</label>
+    <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="pincode" name="pincode" placeholder="Enter your pincode" type="number" pattern="[0-9]{6}"/>
+
+    <label class="text-xs" for="licencenumber">Licence Number</label>
+    <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="licencenumber" name="licencenumber" placeholder="Enter your licence number" type="text">
+
+    <label class="text-xs" for="licenceexpirydate">Licence Expiry Date</label>
+    <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="licenceexpirydate" name="licenceexpirydate" placeholder="Enter your licence expiry date" type="date">
+
+    <label class="text-xs" for="drivinglicence">Driving Licence</label>
+    <input class="border border-[#5a9ea1] rounded-md px-3 py-2 text-xs placeholder:text-[#a0b0b0] focus:outline-none focus:ring-1 focus:ring-[#5a9ea1]" id="drivinglicence" name="drivinglicence" type="file" accept=".pdf,.jpeg,.jpg,.png">
+
+    <!-- Replace the anchor with a submit button -->
+    <button type="submit" class="mt-4 bg-[#5a9ea1] text-white rounded-md py-2 px-4 text-sm hover:bg-[#4a7a7f] transition-colors">
+      Sign up
+    </button>
+  </form>
+
+  <p class="text-xs text-center mt-4">
+    Already a User?
+    <a class="text-[#5a9ea1] hover:underline" href="{% url 'login' %}">Log In</a>
+  </p>

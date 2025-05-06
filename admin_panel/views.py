@@ -1,16 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from seller.models import Seller
 from buyer.models import Buyer
+from delivery_agent.models import DeliveryAgent
 from categories.models import Category
 # Create your views here.
 
 
 def dashboard(request):
     sellers_count = Seller.objects.filter(is_approved=True).count()
+    buyer_count = Buyer.objects.count()
+    delivery_agent_count = DeliveryAgent.objects.count()
     sellers_request_count = Seller.objects.filter(is_approved=False, is_rejected=False).count()
     context = {
         'sellers_count': sellers_count,
-        'sellers_request_count': sellers_request_count
+        'sellers_request_count': sellers_request_count,
+        'buyer_count': buyer_count,
+        'delivery_agent_count': delivery_agent_count
     }
     return render(request, 'admin_panel/admin_dashboard.html', context)
 

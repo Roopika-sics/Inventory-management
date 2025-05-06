@@ -1,3 +1,4 @@
+{% load static %}
 <html lang="en">
 
 <head>
@@ -18,7 +19,7 @@
 
 <body class="bg-white text-gray-900 w-[100vw] h-[100vh] overflow-x-hidden">
     <div style="width: 100vw;height: 50px;background-color: #4C888E;"></div>
-    <header class="flex items-center justify-between px-4 sm:px-6 md:px-10 py-4 border-b border-gray-200">
+    <header class="flex items-center justify-between px-6 sm:px-6 md:px-10 py-4 border-b border-gray-200">
         <div class="p-4 ml-6">
             <button 
               class="flex flex-col justify-center items-start w-10 h-10 space-y-1.5 px-2 py-2" 
@@ -36,7 +37,7 @@
           
             <!-- Sentimart Logo and Brand Name -->
             <div class="flex items-center space-x-2">
-                <img src="https://s3-alpha-sig.figma.com/img/6996/d31d/ef707408300a4c2cee74dc38fbbcda79?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=MhL7E2EtM8Ewth9PND0syJBGLIRf7VJ70a6OtTyPWgl5xC1IBC16RfjCR4Bgout8xQYAnOrXE0Cn5T5o88-VDEf1415QMPLysFTzs9VmQb1KTU5F9EDvvIO6GIk6LB9HNxtInsoaxfoI7YmRvaEjKjRb6uX0lRRtmQlaN487ThSLLUEfg9KgNFAGqjU6-xlwGR-kAi1fQ8iBOfBaTXMMD1GYX89RdelzTh0A8FS0OkE4OG15tTskGjh8KPOl-QKAwBVzFA3esQSHATh4Q6yBSD~tUnVo57ud~1fu-4ag9DCEEnpmltgdknimvCMFhhQae7JBdXdOq9HARZBIHC~N-w__"
+                <img src="{% static 'images/logo.png' %}"
                     alt="Sentimart logo with wave design in teal and text Sentimart"
                     class="w-[60px] h-[40px] object-contain" />
                 <span class="font-semibold text-teal-700 text-lg select-none">Sentimart</span>
@@ -64,9 +65,13 @@
   </button>
         </form>
 
-        <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-teal-700"> <a href="./index.html"
-                class="hover:underline">Home</a> <a href="{% url 'seller_register' %}" class="hover:underline">Become a seller</a> <a href="#"
-                class="hover:underline">Become a delivery agent</a> <a href="{% url 'login' %}" class="hover:underline">Login</a> </nav>
+        <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-teal-700">
+            <a href="./index.html" class="hover:underline">Home</a>
+            <a href="{% url 'seller_register' %}" class="hover:underline">Become a seller</a>
+            <a href="{% url 'delivery_agent_register' %}" class="hover:underline">Become a delivery agent</a>
+            <a href="{% url 'login' %}" class="hover:underline">Login</a> 
+        </nav>
+        
     </header>
     <main class="px-4 sm:px-6 md:px-10 max-w-[1200px] mx-auto mt-6 mb-16"> <!-- Banner -->
         <!-- slider -->

@@ -24,8 +24,6 @@ def seller_registration(request):
 
         seller = Seller.objects.create(
             user=user,
-            # full_name=full_name,
-            # email=email,
             phone_number=phone,
             business_name=business_name,
             business_type=business_type,

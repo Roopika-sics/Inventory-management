@@ -26,6 +26,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('admin_panel/', include('admin_panel.urls')),
     path('buyer/', include('buyer.urls')),
+    path('delivery_agent/', include('delivery_agent.urls')),
 ]
 
 if settings.DEBUG:

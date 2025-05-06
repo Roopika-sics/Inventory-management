@@ -1,6 +1,6 @@
 {% extends './buyer_base.html' %}
 {% load static %}
-
+{% load custom_filters %}
 {% block content %}
 
 {% for message in messages %}
@@ -31,7 +31,7 @@
             <h5 class="card-title">{{ item.product.name }}</h5>
             <p class="card-text">{{ item.product.description|truncatewords:20 }}</p>
             <p class="card-text">
-              <small class="text-muted">₹{{ item.product.price }} × <span id="quantity-{{ item.id }}">{{ item.quantity }}</span> = ₹{{ item.total_price }}</small>
+              <small class="text-muted">₹{{ item.product.base_price|sub:item.product.discount  }} × <span id="quantity-{{ item.id }}">{{ item.quantity }}</span> = ₹{{ item.total_price }}</small>
             </p>
             <div class="d-flex align-items-center justify-content-between">
                 <div class="btns">
