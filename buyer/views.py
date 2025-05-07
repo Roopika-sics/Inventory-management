@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 import json
+from django.db.models import Q
 # Create your views here.
 
 def buyer_register(request):
@@ -40,13 +41,49 @@ def buyer_register(request):
     
     return render(request, 'buyer/buyer_register.html')
 
+def get_user_recommendations(user):
+    cart_cats = CartItem.objects.filter(user=user).values_list('product__category', flat=True)
+    order_cats = OrderItem.objects.filter(order__user=user).values_list('product__category', flat=True)
+    categories = list(set(cart_cats) | set(order_cats))
+
+    interacted_product_ids = set(
+        CartItem.objects.filter(user=user).values_list('product__id', flat=True)
+    ) | set(
+        OrderItem.objects.filter(order__user=user).values_list('product__id', flat=True)
+    )
+
+    if categories:
+        recommendations = Product.objects.filter(
+            category__in=categories
+        ).exclude(id__in=interacted_product_ids).distinct()[:5]
+    else:
+        # fallback to latest products
+        recommendations = Product.objects.exclude(id__in=interacted_product_ids).order_by('-id')[:5]
+
+    return recommendations
+
 
 @login_required
 @never_cache
 def buyer_home(request):
     smartphones = Product.objects.filter(category__name='Smart Phone')
     categories = Category.objects.all()
-    return render(request, 'buyer/buyer_home.html', {'smartphones': smartphones, 'categories': categories})
+    query = request.GET.get('q', '')
+    search_results = Product.objects.filter(
+        Q(name__icontains=query) |
+        Q(description__icontains=query) |
+        Q(brand_name__icontains=query) |
+        Q(model_number__icontains=query)
+    )
+
+    recommendations = []
+    if request.user.is_authenticated:
+        recommendations = get_user_recommendations(request.user)
+    
+    return render(request, 'buyer/buyer_home.html', {'smartphones': smartphones, 'categories': categories, 'query': query,
+        'search_results': search_results,
+        'recommendations': recommendations,})
+        
 
 @login_required
 @never_cache
@@ -158,3 +195,23 @@ def remove_cart_item(request, item_id):
     cart_item = get_object_or_404(CartItem, id=item_id, user=request.user)
     cart_item.delete()
     return redirect('cart')
+
+
+# def search_products(request):
+#     query = request.GET.get('q', '')
+#     search_results = Product.objects.filter(
+#         Q(name__icontains=query) |
+#         Q(description__icontains=query) |
+#         Q(brand_name__icontains=query) |
+#         Q(model_number__icontains=query)
+#     )
+
+#     recommendations = []
+#     if request.user.is_authenticated:
+#         recommendations = get_user_recommendations(request.user)
+
+#     return render(request, 'buyer/buyer_home.html', {
+#         'query': query,
+#         'search_results': search_results,
+#         'recommendations': recommendations,
+#     })

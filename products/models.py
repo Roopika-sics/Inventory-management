@@ -7,7 +7,7 @@ from categories.models import Category
 
 class Product(models.Model):
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='products', null=True)
     sub_category = models.CharField(max_length=100)
     name = models.CharField(max_length=200)
     description = models.TextField()

@@ -89,6 +89,23 @@
             // Auto-slide every 4 seconds
             setInterval(nextSlide, 4000);
           </script>
+
+        <!-- recommented products section -->
+        <h2 class="text-lg font-semibold mt-8">Recommended for You</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+          {% for product in recommendations %}
+            <!-- Product Card -->
+            <div class="border rounded-lg p-4">
+              <img src="{{ product.image.url }}" alt="{{ product.name }}" class="h-40 w-full object-cover mb-2">
+              <h3 class="font-semibold">{{ product.name }}</h3>
+              <p class="text-sm text-gray-600">{{ product.brand_name }}</p>
+              <p class="text-teal-600 font-bold">₹{{ product.base_price }}</p>
+            </div>
+          {% empty %}
+            <p>No recommendations available yet.</p>
+          {% endfor %}
+        </div>
+        
           
         <!-- Smartphones Section -->
         <section class="mt-10">

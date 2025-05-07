@@ -44,24 +44,28 @@
         
         
         <form
-  class="hidden sm:flex items-center border border-gray-300 rounded-full px-3 py-1 w-[450px] md:w-[450px] md:h-[50px] focus-within:ring-2 focus-within:ring-teal-500"
-  role="search" aria-label="Search for products">
+        method="get"
+        action="{% url 'buyer-home' %}"  
+        class="hidden sm:flex items-center border border-gray-300 rounded-full px-3 py-1 w-[450px] md:w-[450px] md:h-[50px] focus-within:ring-2 focus-within:ring-teal-500"
+        role="search" aria-label="Search for products">
 
-  <!-- Search Icon -->
-  <svg class="w-4 h-4 text-gray-500 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
-  </svg>
+        <!-- Search Icon -->
+        <svg class="w-4 h-4 text-gray-500 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
+        </svg>
 
-  <!-- Search Input -->
-  <input type="search" placeholder="Search for products"
-    class="flex-grow text-sm text-gray-600 placeholder-gray-400 outline-none bg-transparent"
-    aria-label="Search for products" />
+        <!-- Search Input -->
+        <input type="search"
+            name="q"
+            placeholder="Search for products"
+            class="flex-grow text-sm text-gray-600 placeholder-gray-400 outline-none bg-transparent"
+            aria-label="Search for products" />
 
-  <!-- AI Button -->
-  <button type="submit" aria-label="Search"
-    class="text-teal-600 text-xs font-semibold rounded-full border border-teal-300 w-6 h-6 flex items-center justify-center ml-2">
-    AI
-  </button>
+        <!-- AI Button -->
+        <button type="submit" aria-label="Search"
+            class="text-teal-600 text-xs font-semibold rounded-full border border-teal-300 w-6 h-6 flex items-center justify-center ml-2">
+            AI
+        </button>
         </form>
 
         <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-teal-700"> 
