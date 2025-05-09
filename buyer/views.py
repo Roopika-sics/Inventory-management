@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from accounts.models import User
 from .models import Buyer
 from django.contrib import messages
+from categories.models import Category  
 from products.models import Product, CartItem, Order, OrderItem
 from categories.models import Category
 from django.contrib.auth.decorators import login_required
@@ -67,6 +68,7 @@ def get_user_recommendations(user):
 @never_cache
 def buyer_home(request):
     smartphones = Product.objects.filter(category__name='Smart Phone')
+    smart_wantchs = Product.objects.filter(category__name='Smart Watches')
     categories = Category.objects.all()
     query = request.GET.get('q', '')
     search_results = Product.objects.filter(
@@ -80,9 +82,15 @@ def buyer_home(request):
     if request.user.is_authenticated:
         recommendations = get_user_recommendations(request.user)
     
-    return render(request, 'buyer/buyer_home.html', {'smartphones': smartphones, 'categories': categories, 'query': query,
+    return render(request, 'buyer/buyer_home.html', {
+        'smartphones': smartphones,
+        'categories': categories,
+        'query': query,
         'search_results': search_results,
-        'recommendations': recommendations,})
+        'recommendations': recommendations,
+        'smart_wantchs': smart_wantchs
+        
+        })
         
 
 @login_required
@@ -215,3 +223,15 @@ def remove_cart_item(request, item_id):
 #         'search_results': search_results,
 #         'recommendations': recommendations,
 #     })
+
+
+def smart_phones(request):
+    return render(request, 'buyer/smartphones.html')
+
+def category_products(request, slug):
+    category = Category.objects.get(slug=slug)
+    products = Product.objects.filter(category=category)
+    return render(request, 'buyer/Category_products.html', {
+        'category': category,
+        'products': products
+    })
