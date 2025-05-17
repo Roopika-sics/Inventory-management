@@ -138,7 +138,6 @@ def cart_view(request):
 @login_required
 def place_order(request):
     cart_items = CartItem.objects.filter(user=request.user)
-    total = sum(item.total_price() for item in cart_items)
     if not cart_items.exists():
         return redirect('cart')
 
@@ -146,6 +145,12 @@ def place_order(request):
         address = request.POST.get('address')
         total = sum(item.product.base_price * item.quantity for item in cart_items)
         
+       
+        for item in cart_items:
+            if item.quantity > item.product.stock:
+                messages.error(request, f"Not enough stock for {item.product.name}.")
+                return redirect('cart')
+
         order = Order.objects.create(user=request.user, delivery_address=address, total_price=total)
         
         for item in cart_items:
@@ -155,17 +160,16 @@ def place_order(request):
                 quantity=item.quantity,
                 price=item.product.base_price
             )
-            # Reduce stock
+            
             item.product.stock -= item.quantity
             item.product.save()
         
-        # Clear cart
         cart_items.delete()
 
         return render(request, 'buyer/order_success.html', {'order': order})
 
     total_price = sum(item.product.base_price * item.quantity for item in cart_items)
-    return render(request, 'buyer/place_order.html', {'cart_items': cart_items, 'total_price': total})
+    return render(request, 'buyer/place_order.html', {'cart_items': cart_items, 'total_price': total_price})
 
 
 def update_cart_item(request):

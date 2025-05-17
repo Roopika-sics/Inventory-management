@@ -29,8 +29,8 @@
                                 -
                             </button>
                         
-                            <input type="number" id="quantity" name="quantity" value="1" class="w-12 text-center border-gray-300 border-2 rounded-md" {% if product.stock == 0 %}disabled{% endif %}>
-                        
+                            <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ product.stock }}" class="w-12 text-center border-gray-300 border-2 rounded-md" {% if product.stock == 0 %}disabled{% endif %}>
+                            
                             <button type="button" class="bg-gray-200 text-gray-700 px-2 py-2 rounded-md" onclick="increaseQuantity()" {% if product.stock == 0 %}disabled{% endif %}>
                                 +
                             </button>
