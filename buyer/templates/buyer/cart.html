@@ -33,6 +33,9 @@
             <p class="card-text">
               <small class="text-muted">₹{{ item.product.base_price|sub:item.product.discount  }} × <span id="quantity-{{ item.id }}">{{ item.quantity }}</span> = ₹{{ item.total_price }}</small>
             </p>
+             <p class="card-text">Color: {{ item.selected_color }}</p>
+             <p class="card-text">Size: {{ item.selected_size }}</p>
+
             <div class="d-flex align-items-center justify-content-between">
                 <div class="btns">
                     <button type="button" class="btn btn-outline-secondary btn-sm me-2" onclick="decreaseQuantity('{{ item.id }}')">-</button>

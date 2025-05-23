@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Review</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .star-rating input { display: none; }
+        .star-rating label {
+            font-size: 24px;
+            color: lightgray;
+            cursor: pointer;
+        }
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: gold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Add Review for {{ product.name }}</h2>
+        <img src="{{ product.image.url }}" width="200"><br><br>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <label>How was the product</label><br>
+            {{ form.comment }}<br><br>
+
+            <label>Rate us</label><br>
+            <div class="star-rating">
+                {% for i in "54321" %}
+                    <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}">
+                    <label for="star{{ i }}">&#9733;</label>
+                {% endfor %}
+            </div><br>
+
+            <label>Upload Image (optional)</label><br>
+            {{ form.image }}<br><br>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

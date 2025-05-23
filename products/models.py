@@ -11,6 +11,8 @@ class Product(models.Model):
     sub_category = models.CharField(max_length=100)
     name = models.CharField(max_length=200)
     description = models.TextField()
+    colors = ["Brown", "Red", "Yellow", "Green", "Black"]
+    sizes = ["S", "M", "L", "XL", "XXL"]
     image = models.ImageField(upload_to='products/')
     brand_name = models.CharField(max_length=100)
     model_number = models.CharField(max_length=100)
@@ -37,6 +39,8 @@ class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     added_at = models.DateTimeField(auto_now_add=True)
+    selected_color = models.CharField(max_length=20, blank=True)
+    selected_size = models.CharField(max_length=10, blank=True)
 
     def total_price(self):
         return self.product.final_price() * self.quantity
@@ -66,3 +70,21 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    selected_color = models.CharField(max_length=20, blank=True)
+    selected_size = models.CharField(max_length=10, blank=True)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.quantity}x"
+
+
+
+class Review(models.Model):
+    product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    rating = models.IntegerField(default=1)
+    comment = models.TextField(blank=True)
+    image = models.ImageField(upload_to='review_images/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.product.name}"

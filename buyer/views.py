@@ -15,6 +15,10 @@ from django.utils.decorators import method_decorator
 import json
 from django.db.models import Q
 from django.http import HttpResponseForbidden
+from products.models import Product, Review
+from .forms import ReviewForm
+from django.urls import reverse
+
 # Create your views here.
 
 def buyer_register(request):
@@ -105,26 +109,36 @@ def product_detail(request, pk):
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     quantity = int(request.POST.get('quantity', 1))
+    selected_color = request.POST.get('color')
+    selected_size = request.POST.get('size')
+
+    if not selected_color or not selected_size:
+        messages.error(request, "Please select both color and size.")
+        return redirect('product-detail', pk=product_id)
 
     if quantity > product.stock:
         quantity = product.stock
 
-    cart_item, created = CartItem.objects.get_or_create(user=request.user, product=product)
+    cart_item, created = CartItem.objects.get_or_create(
+        user=request.user, product=product,
+        defaults={
+            'quantity': quantity,
+            'selected_color': selected_color,
+            'selected_size': selected_size
+        }
+    )
 
-    if product.stock > 0:
-        if created:
-            cart_item.quantity = quantity
-        else:
-            cart_item.quantity += quantity
-
+    if not created:
+        cart_item.quantity += quantity
+        cart_item.selected_color = selected_color 
+        cart_item.selected_size = selected_size
         cart_item.save()
-        product.stock -= quantity
-        product.save()
-        messages.success(request, "Product added to cart.")
-    else:
-        messages.error(request, "Product is out of stock.")
-        return redirect('product-detail', pk=product_id)
 
+    # Update stock
+    product.stock -= quantity
+    product.save()
+
+    messages.success(request, "Product added to cart.")
     return redirect('product-detail', pk=product_id)
 
 @login_required
@@ -270,3 +284,19 @@ def track_order_view(request, order_id):
         return redirect('track_order', order_id=order.id)
 
     return render(request, 'buyer/track_order.html', {'order': order})
+
+@login_required
+def add_review(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, request.FILES)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.product = product
+            review.save()
+            return redirect(reverse('product-detail', kwargs={'pk': product.id}))
+    else:
+        form = ReviewForm()
+
+    return render(request, 'buyer/add_review.html', {'product': product, 'form': form})

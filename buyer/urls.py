@@ -14,6 +14,7 @@ urlpatterns = [
     path('category/<slug:slug>/', views.category_products, name='category_products'),
     path('orders/', views.orders, name='orders'),
     path('track-order/<int:order_id>/', views.track_order_view, name='track_order'),
+    path('product/<int:product_id>/review/', views.add_review, name='add_review'),
 
     # path('search/', views.search_products, name='search_products'),
 
