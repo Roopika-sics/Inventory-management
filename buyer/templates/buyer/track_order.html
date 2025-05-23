@@ -1,0 +1,71 @@
+{% extends './buyer_base.html' %}
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-xl font-semibold mb-4">Order tracking - {{ order.id }}</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for item in order.items.all %}
+            <div class="flex items-start space-x-6">
+                <!-- Product image -->
+                <img src="{{ item.product.image.url }}" class="w-40 h-40 object-contain" />
+
+                <!-- Order details -->
+                <div>
+                    <h3 class="text-2xl font-bold">{{ item.product.name }}</h3>
+                    <p class="mt-2">Quantity: {{ item.quantity }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Tracking box -->
+    <div class="mt-8 bg-blue-100 p-6 rounded-lg">
+        <div class="flex justify-between text-sm font-medium mb-4">
+            <span>Shipped Via</span>
+            <span>Status</span>
+            <span>Expected Date</span>
+        </div>
+        <div class="flex justify-between font-semibold text-lg">
+            <span>{{ order.shipping_method }}</span>
+            <span class="capitalize">{{ order.get_status_display }}</span>
+            <span>{{ order.expected_date }}</span>
+        </div>
+
+        <!-- Tracking Line -->
+        <div class="mt-6 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 rounded-full bg-white border-2 border-green-500 flex items-center justify-center">
+                    📦
+                </div>
+                <span class="text-sm">Placed</span>
+            </div>
+            <div class="flex-1 h-1 bg-green-300 mx-2"></div>
+
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 rounded-full bg-white border-2 {% if order.status in 'in_transit delivered' %}border-green-500{% else %}border-gray-400{% endif %} flex items-center justify-center">
+                    🚚
+                </div>
+                <span class="text-sm">In Transit</span>
+            </div>
+            <div class="flex-1 h-1 bg-green-300 mx-2"></div>
+
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 rounded-full bg-white border-2 {% if order.status == 'delivered' %}border-green-500{% else %}border-gray-400{% endif %} flex items-center justify-center">
+                    ✅
+                </div>
+                <span class="text-sm">Delivered</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancel button -->
+    {% if order.status %}
+    <form method="post" class="mt-6">
+        {% csrf_token %}
+        <button type="submit" name="cancel" class="px-4 py-2 bg-red-600 text-white rounded">Cancel Order</button>
+    </form>
+    {% elif order.status == 'cancelled' %}
+    <p class="mt-6 text-red-500 font-bold">This order has been cancelled.</p>
+    {% endif %}
+</div>
+{% endblock %}

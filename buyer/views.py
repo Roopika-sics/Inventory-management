@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 import json
 from django.db.models import Q
+from django.http import HttpResponseForbidden
 # Create your views here.
 
 def buyer_register(request):
@@ -239,3 +240,33 @@ def category_products(request, slug):
         'category': category,
         'products': products
     })
+
+@login_required
+def orders(request):
+    status = request.GET.get('status')
+    if status:
+        orders = Order.objects.filter(user=request.user, status=status)
+    else:
+        orders = Order.objects.filter(user=request.user)
+
+    return render(request, 'buyer/orders.html', {
+        'orders': orders,
+        'current_status': status or 'all'
+    })
+
+@login_required
+def track_order_view(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    # Ensure only the owner can track
+    if order.user != request.user:
+        return HttpResponseForbidden("You are not allowed to view this order.")
+
+    # Handle cancellation
+    if request.method == 'POST' and 'cancel' in request.POST:
+        if order.status not in ['delivered', 'cancelled']:
+            order.status = 'cancelled'
+            order.save()
+        return redirect('track_order', order_id=order.id)
+
+    return render(request, 'buyer/track_order.html', {'order': order})
