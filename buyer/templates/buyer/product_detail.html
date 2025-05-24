@@ -30,34 +30,22 @@
 
             <p class="text-2xl text-gray-900 font-bold">₹{{ product.price }}</p>
 
-            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+            <form method="POST" action="{% url 'add-to-cart' product.id %}">
                 {% csrf_token %}
 
-                <!-- Color Selection -->
-                <div class="space-y-2">
-                    <p class="font-semibold text-gray-700">Select Color</p>
-                    <div class="flex gap-2">
-                        {% for color in product.colors %}
-                            <label class="cursor-pointer">
-                                <input type="radio" name="color" value="{{ color }}" class="hidden peer" required>
-                                <span class="px-3 py-1 rounded border peer-checked:bg-blue-500 peer-checked:text-white">{{ color }}</span>
-                            </label>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <!-- Size Selection -->
+               {% for attribute in attributes %}
                 <div class="space-y-2 mt-4">
-                    <p class="font-semibold text-gray-700">Select Size</p>
+                    <p class="font-semibold text-gray-700">Select {{ attribute.name }}</p>
                     <div class="flex gap-2">
-                        {% for size in product.sizes %}
+                        {% for value in attribute.values %}
                             <label class="cursor-pointer">
-                                <input type="radio" name="size" value="{{ size }}" class="hidden peer" required>
-                                <span class="px-3 py-1 rounded border peer-checked:bg-green-500 peer-checked:text-white">{{ size }}</span>
+                                <input type="radio" name="{{ attribute.name }}" value="{{ value }}" class="hidden peer" required>
+                                <span class="px-3 py-1 rounded border peer-checked:bg-blue-500 peer-checked:text-white">{{ value }}</span>
                             </label>
                         {% endfor %}
                     </div>
                 </div>
+                {% endfor %}
 
                 <!-- Quantity -->
                 <input type="number" name="quantity" min="1" max="{{ product.stock }}" value="1" class="mt-4 border px-2 py-1 rounded">
@@ -73,22 +61,7 @@
                 <p class="text-sm text-gray-400">Expected delivery: 28 October 2024</p>
             </div>
 
-            <!-- Quantity and Buttons -->
-            <!-- <form method="POST" action="{% url 'add_to_cart' product.id %}" class="space-y-4">
-                {% csrf_token %}
-                <div class="flex items-center gap-4">
-                    <label for="quantity" class="text-sm font-medium text-gray-700">Quantity:</label>
-                    <button type="button" onclick="decreaseQuantity()" class="bg-gray-200 px-3 py-1 rounded">−</button>
-                    <input id="quantity" name="quantity" type="number" value="1" min="1" max="{{ product.stock }}" class="w-16 text-center border rounded">
-                    <button type="button" onclick="increaseQuantity()" class="bg-gray-200 px-3 py-1 rounded">+</button>
-                </div>
-
-                <div class="flex gap-4">
-                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Add to Cart</button>
-                    <button type="button" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">Buy Now</button>
-                </div>
-            </form> -->
-
+            
             {% if product.stock == 0 %}
                 <p class="text-red-500 font-semibold">Out of Stock</p>
             {% else %}

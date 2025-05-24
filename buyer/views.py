@@ -4,7 +4,7 @@ from accounts.models import User
 from .models import Buyer
 from django.contrib import messages
 from categories.models import Category  
-from products.models import Product, CartItem, Order, OrderItem
+from products.models import Product, CartItem, Order, OrderItem, ProductVariant, ProductAttribute, ProductAttributeValue
 from categories.models import Category
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
@@ -15,7 +15,6 @@ from django.utils.decorators import method_decorator
 import json
 from django.db.models import Q
 from django.http import HttpResponseForbidden
-from products.models import Product, Review
 from .forms import ReviewForm
 from django.urls import reverse
 
@@ -83,6 +82,7 @@ def buyer_home(request):
         Q(model_number__icontains=query)
     )
 
+
     recommendations = []
     if request.user.is_authenticated:
         recommendations = get_user_recommendations(request.user)
@@ -97,47 +97,80 @@ def buyer_home(request):
         
         })
         
-
+from collections import defaultdict
 @login_required
 @never_cache
 def product_detail(request, pk):
     product = Product.objects.get(pk=pk)
-    return render(request, 'buyer/product_detail.html', {'product': product})
+    variants = product.variants.prefetch_related('attributes__attribute').all()
+    attributes_dict = defaultdict(set)
+    for variant in variants:
+        for attr_value in variant.attributes.all():
+            attributes_dict[attr_value.attribute.name].add(attr_value.value)
 
+   
+    attributes_data = [
+        {"name": name, "values": sorted(list(values))}
+        for name, values in attributes_dict.items()
+    ]
+
+    return render(request, "buyer/product_detail.html", {
+        "product": product,
+        "attributes": attributes_data,
+    })
+    
+from django.db.models import Q
+from django.db import models
+from django.db.models import Count
 @login_required
 @never_cache
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     quantity = int(request.POST.get('quantity', 1))
-    selected_color = request.POST.get('color')
-    selected_size = request.POST.get('size')
 
-    if not selected_color or not selected_size:
-        messages.error(request, "Please select both color and size.")
+    selected_attrs = []
+    for key, value in request.POST.items():
+        if key not in ['csrfmiddlewaretoken', 'quantity']:
+            try:
+                attr = ProductAttribute.objects.get(name=key)
+                attr_val = ProductAttributeValue.objects.get(attribute=attr, value=value)
+                selected_attrs.append(attr_val.id)
+            except ProductAttributeValue.DoesNotExist:
+                messages.error(request, "Invalid product attribute selected.")
+                return redirect('product-detail', pk=product_id)
+
+    variants = ProductVariant.objects.filter(product=product)
+    matched_variant = None
+
+    for variant in variants:
+        variant_attr_ids = set(variant.attributes.values_list('id', flat=True))
+        if set(selected_attrs) == variant_attr_ids:
+            matched_variant = variant
+            break
+
+    if not matched_variant:
+        messages.error(request, "Selected variant does not exist.")
         return redirect('product-detail', pk=product_id)
 
-    if quantity > product.stock:
-        quantity = product.stock
+    if quantity > matched_variant.stock:
+        messages.error(request, "Not enough stock for the selected variant.")
+        return redirect('product-detail', pk=product_id)
 
     cart_item, created = CartItem.objects.get_or_create(
-        user=request.user, product=product,
-        defaults={
-            'quantity': quantity,
-            'selected_color': selected_color,
-            'selected_size': selected_size
-        }
+        user=request.user,
+        product=product,
+        variant=matched_variant,
+        defaults={'quantity': quantity}
     )
 
     if not created:
         cart_item.quantity += quantity
-        cart_item.selected_color = selected_color 
-        cart_item.selected_size = selected_size
         cart_item.save()
 
-    # Update stock
-    product.stock -= quantity
-    product.save()
-
+    matched_variant.stock -= quantity
+    matched_variant.save()
+    print("Selected attribute IDs:", selected_attrs)
+    print("Variant attributes:", list(variant.attributes.values_list('id', flat=True)))
     messages.success(request, "Product added to cart.")
     return redirect('product-detail', pk=product_id)
 

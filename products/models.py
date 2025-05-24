@@ -4,15 +4,12 @@ from categories.models import Category
 # Create your models here.
 # products/models.py
 
-
 class Product(models.Model):
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='products', null=True)
     sub_category = models.CharField(max_length=100)
     name = models.CharField(max_length=200)
     description = models.TextField()
-    colors = ["Brown", "Red", "Yellow", "Green", "Black"]
-    sizes = ["S", "M", "L", "XL", "XXL"]
     image = models.ImageField(upload_to='products/')
     brand_name = models.CharField(max_length=100)
     model_number = models.CharField(max_length=100)
@@ -33,14 +30,35 @@ class Product(models.Model):
         if self.base_price > 0:
             return (self.discount / self.base_price) * 100
         return 0
+    
+class ProductAttribute(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+class ProductAttributeValue(models.Model):
+    attribute = models.ForeignKey(ProductAttribute, on_delete=models.CASCADE)
+    value = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.attribute.name}: {self.value}"
+
+class ProductVariant(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='variants')
+    attributes = models.ManyToManyField(ProductAttributeValue)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    stock = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.product.name} - {' - '.join([str(a) for a in self.attributes.all()])}"
 
 class CartItem(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=1)
     added_at = models.DateTimeField(auto_now_add=True)
-    selected_color = models.CharField(max_length=20, blank=True)
-    selected_size = models.CharField(max_length=10, blank=True)
 
     def total_price(self):
         return self.product.final_price() * self.quantity
@@ -68,10 +86,9 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    selected_color = models.CharField(max_length=20, blank=True)
-    selected_size = models.CharField(max_length=10, blank=True)
 
     def __str__(self):
         return f"{self.product.name} - {self.quantity}x"
@@ -88,3 +105,6 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.product.name}"
+    
+
+
