@@ -35,3 +35,6 @@ def delivery_agent_register(request):
         return redirect('landing_page')
 
     return render(request, 'delivery_agent/agent_register.html')
+
+def delivery_agent_dashboard(request):
+    return render(request, 'delivery_agent/agent_dashboard.html')

@@ -23,6 +23,8 @@ def user_login(request):
                 return redirect('user_dashboard')
             elif user.user_type == 'buyer':
                 return redirect('buyer-home')
+            elif user.user_type == 'delivery_agent':
+                return redirect('delivery_agent_home')
             else:
                 return redirect('home')
         else:
