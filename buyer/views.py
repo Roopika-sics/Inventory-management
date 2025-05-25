@@ -307,6 +307,7 @@ def category_products(request, slug):
 @login_required
 def orders(request):
     status = request.GET.get('status')
+    print('ststuss', status)
     if status:
         orders = Order.objects.filter(user=request.user, status=status)
     else:

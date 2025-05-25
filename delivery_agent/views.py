@@ -4,6 +4,9 @@ from .models import DeliveryAgent, OrderVisibility
 from products.models import Order
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from django.views.decorators.http import require_POST
+
 # Create your views here.
 
 def delivery_agent_register(request):
@@ -44,14 +47,23 @@ def delivery_agent_dashboard(request):
 
 def delivery_requests(request):
     agent = DeliveryAgent.objects.get(user=request.user)    
+    status = request.GET.get('status')
+    print('ststuss',status)
 
     rejected_orders = OrderVisibility.objects.filter(agent=agent, rejected=True).values_list('order_id', flat=True)
-    orders = Order.objects.filter(is_assigned=False).exclude(id__in=rejected_orders).prefetch_related(
-        'items__product__seller__seller_profile'
-    )
+    print(rejected_orders)
+    if status == 'placed':
+        orders = Order.objects.filter(status='placed').exclude(assigned_to=agent)
+    elif status == 'pending':
+        orders = Order.objects.filter(status='pending', assigned_to=agent)
+    elif status == 'delivered':
+        orders = Order.objects.filter(status='delivered', assigned_to=agent)
+    else:
+        orders = []
+    
 
 
-    return render(request, 'delivery_agent/delivery_requests.html', {'orders': orders})
+    return render(request, 'delivery_agent/delivery_requests.html', {'orders': orders, 'status': status, 'rejected_orders': rejected_orders})
 
 @login_required
 def accept_order(request, order_id):
@@ -60,10 +72,10 @@ def accept_order(request, order_id):
 
     order.assigned_to = agent
     order.is_assigned = True
-    order.status = 'Accepted'
+    order.status = 'pending'
     order.save()
 
-    return redirect('delivery_requests')
+    return redirect(f"{reverse('delivery_requests')}?status=pending")
 
 def reject_order(request, order_id):
     agent = DeliveryAgent.objects.get(user=request.user)
@@ -71,3 +83,38 @@ def reject_order(request, order_id):
 
     OrderVisibility.objects.create(order=order, agent=agent, rejected=True)
     return redirect('delivery_requests')
+
+@login_required
+def mark_as_delivered(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    agent = get_object_or_404(DeliveryAgent, user=request.user)
+
+    if order.assigned_to == agent:
+        order.status = 'delivered'
+        order.save()
+
+    return redirect('pending_deliveries')
+
+@require_POST
+def update_order_status(request, order_id):
+    order = get_object_or_404(Order, id=order_id, assigned_to__user=request.user)
+    new_status = request.POST.get('new_status')
+
+    if new_status in ['transit', 'delivered']:
+        order.status = new_status
+        order.save()
+
+    return redirect(f"{reverse('delivery_requests')}?status=pending")
+
+@require_POST
+def report_order_issue(request, order_id):
+    order = get_object_or_404(Order, id=order_id, assigned_to__user=request.user)
+
+    issue_reason = request.POST.get('issue_reason')
+    notes = request.POST.get('additional_notes')
+
+    order.issue_reason = f"{issue_reason} - {notes}"
+    order.status = 'pending'
+    order.save()
+
+    return redirect(f"{reverse('delivery_dashboard')}?status=pending")

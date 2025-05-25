@@ -35,7 +35,7 @@
           </div>
           
             <!-- Sentimart Logo and Brand Name -->
-            <a href="{% url 'buyer-home' %}" class="hover:no-underline">
+            <a href="" class="hover:no-underline">
             <div class="flex items-center space-x-2">
                 <img src="{% static 'images/logo.png' %}"
                     alt="Sentimart logo with wave design in teal and text Sentimart"
@@ -47,7 +47,7 @@
         
         <form
         method="get"
-        action="{% url 'buyer-home' %}"  
+        action=""  
         class="hidden sm:flex items-center border border-gray-300 rounded-full px-3 py-1 w-[450px] md:w-[450px] md:h-[50px] focus-within:ring-2 focus-within:ring-teal-500"
         role="search" aria-label="Search for products">
 
@@ -71,9 +71,9 @@
         </form>
 
         <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-teal-700"> 
-            <a href="{% url 'buyer-home' %}" class="hover:underline">Home</a> 
+            <a href="" class="hover:underline">Home</a> 
             <a href="#" class="hover:underline">Profile</a> 
-            <a href="{% url 'delivery_requests' %}" class="hover:underline">Delivery Requests</a>
+            <a href="{% url 'delivery_requests' %}?status=placed" class="hover:underline">Delivery Requests</a>
             <a href="{% url 'logout' %}" class="hover:underline">Logout</a> 
         </nav>
     </header>

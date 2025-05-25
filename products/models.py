@@ -70,10 +70,12 @@ class CartItem(models.Model):
 
 class Order(models.Model):
     STATUS_CHOICES = [
-        ('placed', 'Order Placed'),
-        ('transit', 'In Transit'),
-        ('delivered', 'Delivered'),
+        ('placed', 'Order Placed'),      
+        ('pending', 'Pending Delivery'),  
+        ('transit', 'In Transit'),       
+        ('delivered', 'Delivered'),      
         ('cancelled', 'Cancelled'),
+        ('rejected', 'Rejected'),   
     ]
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     delivery_address = models.TextField()
@@ -82,7 +84,7 @@ class Order(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='placed')
     is_assigned = models.BooleanField(default=False)
     assigned_to = models.ForeignKey(DeliveryAgent, null=True, blank=True, on_delete=models.SET_NULL)
-    accept_status = models.CharField(max_length=20, default='Pending') 
+    issue_reason = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"Order #{self.id} - {self.user.username} - {self.status}"
