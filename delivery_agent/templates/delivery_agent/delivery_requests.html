@@ -1,0 +1,52 @@
+{% extends './agent_base.html' %}
+{% load static %}
+{% block content %}
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {% for order in orders %}
+    <div class="rounded-lg shadow-md p-4 bg-gray-100 w-full md:w-[450px] mx-auto my-4">
+        <h2 class="font-bold text-xl">Order No: {{ order.id }}</h2>
+        <div class="flex justify-evenly gap-4">
+            <div class="mt-2">
+                <p><strong>Order Date and time:</strong><br>{{ order.created_at|date:"d/m/Y h:i a" }}</p>
+                <p class="mt-2"><strong>Order details:</strong> 
+                    <a href="" class="bg-gray-200 px-2 py-1 rounded hover:bg-gray-300">View</a>
+                </p>
+                
+                <p class="mt-2"><strong>Customer:</strong><br>
+                    📍 {{ order.delivery_address }}
+                </p>
+            </div>
+            
+            <div>
+                <p class="mt-2"><strong>Seller:</strong><br>
+                    {% if order.items.all %}
+                        {% with seller=order.items.first.product.seller %}
+                            {% with profile=seller.seller_profile %}
+                                {{ seller.username }}<br>
+                                📞 {{ profile.phone_number }}<br>
+                                🏢 {{ profile.business_address }}
+                            {% endwith %}
+                        {% endwith %}
+                    {% else %}
+                        No seller info available.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <div class="mt-4 flex justify-center gap-4">
+            <form method="post" action="{% url 'accept_order' order.id %}">
+                {% csrf_token %}
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Approve</button>
+            </form>
+            <form method="post" action="{% url 'reject_order' order.id %}">
+                {% csrf_token %}
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Reject</button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+        <p>No delivery requests available.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from accounts.models import User
-from .models import DeliveryAgent
+from .models import DeliveryAgent, OrderVisibility
+from products.models import Order
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def delivery_agent_register(request):
@@ -38,3 +41,33 @@ def delivery_agent_register(request):
 
 def delivery_agent_dashboard(request):
     return render(request, 'delivery_agent/agent_dashboard.html')
+
+def delivery_requests(request):
+    agent = DeliveryAgent.objects.get(user=request.user)    
+
+    rejected_orders = OrderVisibility.objects.filter(agent=agent, rejected=True).values_list('order_id', flat=True)
+    orders = Order.objects.filter(is_assigned=False).exclude(id__in=rejected_orders).prefetch_related(
+        'items__product__seller__seller_profile'
+    )
+
+
+    return render(request, 'delivery_agent/delivery_requests.html', {'orders': orders})
+
+@login_required
+def accept_order(request, order_id):
+    agent = DeliveryAgent.objects.get(user=request.user)
+    order = get_object_or_404(Order, id=order_id, is_assigned=False)
+
+    order.assigned_to = agent
+    order.is_assigned = True
+    order.status = 'Accepted'
+    order.save()
+
+    return redirect('delivery_requests')
+
+def reject_order(request, order_id):
+    agent = DeliveryAgent.objects.get(user=request.user)
+    order = get_object_or_404(Order, id=order_id)
+
+    OrderVisibility.objects.create(order=order, agent=agent, rejected=True)
+    return redirect('delivery_requests')

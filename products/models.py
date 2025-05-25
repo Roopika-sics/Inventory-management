@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from categories.models import Category
+from delivery_agent.models import DeliveryAgent
 # Create your models here.
 # products/models.py
 
@@ -79,6 +80,9 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='placed')
+    is_assigned = models.BooleanField(default=False)
+    assigned_to = models.ForeignKey(DeliveryAgent, null=True, blank=True, on_delete=models.SET_NULL)
+    accept_status = models.CharField(max_length=20, default='Pending') 
 
     def __str__(self):
         return f"Order #{self.id} - {self.user.username} - {self.status}"

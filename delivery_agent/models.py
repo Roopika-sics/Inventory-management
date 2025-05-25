@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+
 User = get_user_model()
 # Create your models here.
 
@@ -16,3 +17,11 @@ class DeliveryAgent(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+class OrderVisibility(models.Model):
+    order = models.ForeignKey('products.Order', on_delete=models.CASCADE)
+    agent = models.ForeignKey(DeliveryAgent, on_delete=models.CASCADE)
+    rejected = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('order', 'agent')
