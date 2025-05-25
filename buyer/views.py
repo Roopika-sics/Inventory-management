@@ -4,7 +4,7 @@ from accounts.models import User
 from .models import Buyer
 from django.contrib import messages
 from categories.models import Category  
-from products.models import Product, CartItem, Order, OrderItem, ProductVariant, ProductAttribute, ProductAttributeValue
+from products.models import Product, CartItem, Order, OrderItem, ProductVariant, ProductAttribute, ProductAttributeValue, Invoice
 from categories.models import Category
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
@@ -17,7 +17,8 @@ from django.db.models import Q
 from django.http import HttpResponseForbidden
 from .forms import ReviewForm
 from django.urls import reverse
-
+from django.template.loader import get_template
+import uuid
 # Create your views here.
 
 def buyer_register(request):
@@ -214,10 +215,25 @@ def place_order(request):
         
         cart_items.delete()
 
+        # Create invoice
+        Invoice.objects.create(
+            order=order,
+            invoice_id=str(uuid.uuid4())[:8].upper(),  # Generate unique invoice ID
+        )
+
         return render(request, 'buyer/order_success.html', {'order': order})
 
     total_price = sum(item.product.base_price * item.quantity for item in cart_items)
     return render(request, 'buyer/place_order.html', {'cart_items': cart_items, 'total_price': total_price})
+
+def view_invoice(request, order_id):
+    order = get_object_or_404(Order, pk=order_id, user=request.user)
+    invoice = get_object_or_404(Invoice, order=order)
+    
+    return render(request, 'buyer/invoice_template.html', {
+        'order': order,
+        'invoice': invoice,
+    })
 
 
 def update_cart_item(request):

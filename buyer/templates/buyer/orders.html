@@ -26,6 +26,7 @@
     <a href="{% url 'track_order' order.id %}">
     <button class="mt-2 bg-[#4C888E] text-white px-4 py-1 rounded">Track Order</button>
     </a>
+    <a href="{% url 'view_invoice' order.id %}" class="text-blue-500 underline">Invoice</a>
   </div>
 {% empty %}
   <p>No orders yet.</p>

@@ -106,5 +106,10 @@ class Review(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.product.name}"
     
+class Invoice(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    invoice_id = models.CharField(max_length=100, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-
+    def __str__(self):
+        return self.invoice_id

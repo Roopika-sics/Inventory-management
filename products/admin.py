@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, CartItem, Order, OrderItem, Review, ProductVariant, ProductAttributeValue, ProductAttribute
+from .models import Product, CartItem, Order, OrderItem, Review, ProductVariant, ProductAttributeValue, ProductAttribute, Invoice
 # Register your models here.
 
 admin.site.register(Product)
@@ -10,3 +10,4 @@ admin.site.register(Review)
 admin.site.register(ProductVariant)
 admin.site.register(ProductAttributeValue)
 admin.site.register(ProductAttribute)
+admin.site.register(Invoice)

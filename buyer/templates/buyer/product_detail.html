@@ -15,7 +15,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
         <!-- Product Image -->
         <div class="w-full">
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full object-contain rounded-lg shadow-md">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full object-contain h-14">
         </div>
 
         <!-- Product Details -->
@@ -28,7 +28,7 @@
                 <span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded">New Arrival</span>
             </div>
 
-            <p class="text-2xl text-gray-900 font-bold">₹{{ product.price }}</p>
+            <p class="text-2xl text-gray-900 font-bold">₹{{ product.base_price }}</p>
 
             <form method="POST" action="{% url 'add-to-cart' product.id %}">
                 {% csrf_token %}
