@@ -26,7 +26,13 @@ SECRET_KEY = 'django-insecure-c5@%s271v)!vyl4su_il64f#0v)whrrfvgr_qt3=iq0v@nqfo-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','0.0.0.0','python.sicsglobal.com']
+FORCE_SCRIPT_NAME = '/inventory_management'
+# Add CSRF trusted origins
+CSRF_TRUSTED_ORIGINS = [
+    'https://python.sicsglobal.com',
+    'http://python.sicsglobal.com',
+]
 
 
 # Application definition
@@ -129,7 +135,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-
+STATIC_ROOT= os.path.join(BASE_DIR, "staticfiles")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
