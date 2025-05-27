@@ -1,0 +1,15 @@
+{% extends './buyer_base.html' %}
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  <input name="name" placeholder="Full Name" required><br>
+  <input name="phone_number" placeholder="Phone" required><br>
+  <input name="street_address" placeholder="Street Address" required><br>
+  <input name="apartment" placeholder="Apartment (Optional)"><br>
+  <input name="city" placeholder="City" required><br>
+  <input name="state" placeholder="State" required><br>
+  <input name="zip_code" placeholder="ZIP Code" required><br>
+  <label><input type="checkbox" name="is_default"> Set as default</label><br>
+  <button type="submit">Add Address</button>
+</form>
+{% endblock %}

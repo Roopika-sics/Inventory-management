@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from categories.models import Category
 from delivery_agent.models import DeliveryAgent
+from buyer.models import Address
 # Create your models here.
 # products/models.py
 
@@ -78,7 +79,7 @@ class Order(models.Model):
         ('rejected', 'Rejected'),   
     ]
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    delivery_address = models.TextField()
+    delivery_address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='placed')
@@ -90,7 +91,7 @@ class Order(models.Model):
         return f"Order #{self.id} - {self.user.username} - {self.status}"
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items', null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.PositiveIntegerField()

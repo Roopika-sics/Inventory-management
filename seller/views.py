@@ -3,6 +3,7 @@ from .models import Seller
 from accounts.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
+from django.contrib import messages
 
 def seller_registration(request):
     if request.method == "POST":
@@ -32,7 +33,8 @@ def seller_registration(request):
             validation_document=validation_doc
         )
 
-        return redirect('landing_page')
+        messages.success(request, "Registration successful! Please log in.")
+        return redirect('login')
 
     return render(request, 'seller/seller_registration.html')
 

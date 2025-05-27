@@ -15,8 +15,12 @@ urlpatterns = [
     path('orders/', views.orders, name='orders'),
     path('track-order/<int:order_id>/', views.track_order_view, name='track_order'),
     path('product/<int:product_id>/review/', views.add_review, name='add_review'),
-    path('buyer/invoice/<int:order_id>/', views.view_invoice, name='view_invoice')
-
+    path('buyer/invoice/<int:order_id>/', views.view_invoice, name='view_invoice'),
+    path('addresses/', views.address_list, name='address_list'),
+    path('addresses/add/', views.add_address, name='add_address'),
+    path('addresses/<int:address_id>/edit/', views.edit_address, name='edit_address'),
+    path('addresses/<int:address_id>/delete/', views.delete_address, name='delete_address'),
+    path('addresses/<int:address_id>/set-default/', views.set_default_address, name='set_default_address'),
 
     # path('search/', views.search_products, name='search_products'),
 
