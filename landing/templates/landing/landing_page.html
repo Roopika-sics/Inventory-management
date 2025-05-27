@@ -66,7 +66,7 @@
         </form>
 
         <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-teal-700">
-            <a href="./index.html" class="hover:underline">Home</a>
+            <a href="{% url 'landing_page' %}" class="hover:underline">Home</a>
             <a href="{% url 'seller_register' %}" class="hover:underline">Become a seller</a>
             <a href="{% url 'delivery_agent_register' %}" class="hover:underline">Become a delivery agent</a>
             <a href="{% url 'login' %}" class="hover:underline">Login</a> 
