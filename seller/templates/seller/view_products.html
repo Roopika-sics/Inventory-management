@@ -1,0 +1,159 @@
+{% extends 'seller_base.html' %}
+{% load static %}
+{% block content %}
+</aside>
+<main class="flex-1 p-6 space-y-8">
+ <section class="flex items-center justify-center gap-10 border rounded-lg p-6" style="border-color:#d1d5db">
+  <img alt="Illustration of a woman standing next to a large analytics screen with charts, graphs, and icons representing sentiment analysis" class="w-[200px] h-[140px] object-contain" height="140" src="{% static 'images/Group 225.png' %}" width="200"/>
+  <h1 class="text-teal-700 font-semibold text-xl md:text-2xl">
+   Sell online with Sentimart
+  </h1>
+ </section>
+
+ <section class="max-w-4xl mx-auto">
+     <h3 class="text-[#475569] font-semibold text-[14px] mb-4">
+      Approved Products
+     </h3>
+     <!-- Tabs -->
+     <div class="flex space-x-1 mb-6 text-[12px] font-semibold max-w-xs">
+      <button class="bg-[#94a3b8] text-white rounded-tl rounded-bl px-3 py-1" type="button">
+       Approved products
+      </button>
+      <button class="bg-white border border-gray-300 border-l-0 rounded-tr rounded-br px-3 py-1 text-[#475569]" type="button">
+       Under Review products
+      </button>
+      <button class="bg-white border border-gray-300 border-l-0 rounded-tr rounded-br px-3 py-1 text-[#475569]" type="button">
+       Rejected projects
+      </button>
+     </div>
+     <!-- Product Cards -->
+     <div class="space-y-6">
+      <!-- Product Card 1 -->
+       {% for product in products %}
+      <article class="border border-gray-300 rounded-md p-4 flex flex-col md:flex-row md:space-x-6">
+       <div class="flex flex-col items-center mb-4 md:mb-0">
+        <img alt="User avatar of a man with short brown hair and blue shirt" class="rounded-full w-14 h-14 mb-1" height="60" src="https://storage.googleapis.com/a1aa/image/0337b1a1-8046-4f60-7380-04dcf84ddb17.jpg" width="60"/>
+        <div class="text-center text-[10px] text-[#475569]">
+         <p class="font-semibold text-[11px]">
+          {{product.seller.username }}
+         </p>
+         <p>
+          {{product.seller.email}}
+         </p>
+        </div>
+       </div>
+       <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Left info box -->
+        <div class="border border-gray-300 rounded-md p-3 text-[11px]">
+         <table class="w-full text-left text-[11px]">
+          <tbody>
+           <tr>
+            <td class="pr-2 font-semibold">
+             Sl no
+            </td>
+            <td>
+             {{product.id}}
+            </td>
+           </tr>
+           <tr>
+            <td class="pr-2 font-semibold">
+             product category
+            </td>
+            <td>
+             {{product.category}}
+            </td>
+           </tr>
+           <tr>
+            <td class="pr-2 font-semibold">
+             product sub category
+            </td>
+            <td>
+             {{product.sub_category}}
+            </td>
+           </tr>
+           <tr>
+            <td class="pr-2 font-semibold">
+             Brand name
+            </td>
+            <td>
+             {{product.brand_name}}
+            </td>
+           </tr>
+           <tr>
+            <td class="pr-2 font-semibold">
+             Approved date
+            </td>
+            <td>
+             04-5-2025
+            </td>
+           </tr>
+           <tr>
+            <td class="pr-2 font-semibold">
+             Model number
+            </td>
+            <td>
+             {{product.model_number}}
+            </td>
+           </tr>
+           <tr>
+            <td class="pr-2 font-semibold">
+             status
+            </td>
+            <td class="text-[#22c55e] font-semibold">
+             Approved
+            </td>
+           </tr>
+           <tr>
+            <td class="pr-2 font-semibold">
+             Date listed
+            </td>
+            <td>
+             16-8-2025,2 pm
+            </td>
+           </tr>
+           <tr>
+            <td class="pr-2 font-semibold">
+             last update
+            </td>
+            <td>
+             04-5-2025
+            </td>
+           </tr>
+          </tbody>
+         </table>
+         <p class="mt-2 text-[10px]">
+          Description :
+          <br/>
+          {{product.description}}
+         </p>
+         <button class="mt-2 bg-[#3b82f6] text-white text-[10px] px-2 py-0.5 rounded" type="button">
+          Add stock
+         </button>
+        </div>
+        <!-- Right image and text -->
+        <div class="flex flex-col items-center text-[10px]">
+         <img alt="Innowash Range washing machine white and maroon color front view" class="w-28 h-28 object-contain mb-2" height="120" src="{{product.image.url}}" width="120"/>
+         <p class="text-[11px] font-semibold mb-0.5">
+          {{product.name}}
+         </p>
+         <p class="text-[#3b82f6]">
+          Price :
+          <span class="font-semibold">
+           {{product.base_price}}
+          </span>
+         </p>
+         <p class="text-[#22c55e]">
+          discount :
+          <span class="font-semibold">
+           {{product.discount}}
+          </span>
+         </p>
+        </div>
+       </div>
+      </article>
+      {% endfor %}
+     </div>
+    </section>
+</main>
+
+{% endblock %}

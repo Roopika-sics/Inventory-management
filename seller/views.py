@@ -109,3 +109,7 @@ def add_product(request):
     
     categories = Category.objects.all()
     return render(request, 'seller/add_product.html', {'categories': categories})
+
+def view_products(request):
+    products = Product.objects.filter(seller=request.user)
+    return render(request, 'seller/view_products.html', {'products': products})
