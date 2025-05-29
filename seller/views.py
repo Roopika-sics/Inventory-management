@@ -112,7 +112,6 @@ def add_product(request):
 
 def view_products(request):
     status=request.GET.get('status')
-    print(status)
     if status:
         products = Product.objects.filter(seller=request.user, status=status)
     else:
