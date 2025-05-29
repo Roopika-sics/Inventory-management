@@ -1,0 +1,11 @@
+services:
+  django_backend:
+    build: ./
+    container_name: inventory_management_django
+    volumes:
+      - ./:/app  # Maps the host's directory to /app in the container
+      - ./media:/app/media
+      - ./staticfiles:/app/staticfiles  # Maps the host's staticfiles directory to /app/staticfiles in the container
+    ports:
+      - "8015:8000"
+    restart: always
