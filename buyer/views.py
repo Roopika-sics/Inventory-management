@@ -72,8 +72,8 @@ def get_user_recommendations(user):
 @login_required
 @never_cache
 def buyer_home(request):
-    smartphones = Product.objects.filter(category__name='Smart Phone')
-    smart_wantchs = Product.objects.filter(category__name='Smart Watches')
+    smartphones = Product.objects.filter(category__name='Smart Phone', status='approved')
+    smart_wantchs = Product.objects.filter(category__name='Smart Watches', status='approved')
     categories = Category.objects.all()
     query = request.GET.get('q', '')
     search_results = Product.objects.filter(

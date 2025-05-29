@@ -3,6 +3,7 @@ from seller.models import Seller
 from buyer.models import Buyer
 from delivery_agent.models import DeliveryAgent
 from categories.models import Category
+from products.models import Product
 # Create your views here.
 
 
@@ -78,3 +79,20 @@ def add_category(request):
         Category.objects.create(name=name, image=image)
         return redirect('add_category')
     return render(request, 'admin_panel/add_category.html', {'categories': categories})
+
+def approve_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    product.status = 'approved'
+    product.rejection_reason = None
+    product.save()
+    return redirect('admin_dashboard')
+
+def reject_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        reason = request.POST.get('rejection_reason')
+        product.status = 'rejected'
+        product.rejection_reason = reason
+        product.save()
+        return redirect('admin_dashboard')
+    return render(request, 'admin/reject_product.html', {'product': product})

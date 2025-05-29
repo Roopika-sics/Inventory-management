@@ -111,5 +111,10 @@ def add_product(request):
     return render(request, 'seller/add_product.html', {'categories': categories})
 
 def view_products(request):
-    products = Product.objects.filter(seller=request.user)
-    return render(request, 'seller/view_products.html', {'products': products})
+    status=request.GET.get('status')
+    print(status)
+    if status:
+        products = Product.objects.filter(seller=request.user, status=status)
+    else:
+        products = Product.objects.filter(seller=request.user)
+    return render(request, 'seller/view_products.html', {'products': products, 'current_status': status or 'all'})

@@ -7,6 +7,11 @@ from buyer.models import Address
 # products/models.py
 
 class Product(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    ]
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='products', null=True)
     sub_category = models.CharField(max_length=100)
@@ -17,7 +22,9 @@ class Product(models.Model):
     model_number = models.CharField(max_length=100)
     base_price = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.PositiveIntegerField(default=0) 
+    stock = models.PositiveIntegerField(default=0)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    rejection_reason = models.TextField(null=True, blank=True) 
     
     def __str__(self):
 

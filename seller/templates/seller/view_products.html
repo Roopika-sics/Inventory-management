@@ -11,24 +11,19 @@
  </section>
 
  <section class="max-w-4xl mx-auto">
-     <h3 class="text-[#475569] font-semibold text-[14px] mb-4">
+     <h3 class="text-[#4C888E] text-center font-semibold text-[1.5rem] mb-4">
       Approved Products
      </h3>
      <!-- Tabs -->
-     <div class="flex space-x-1 mb-6 text-[12px] font-semibold max-w-xs">
-      <button class="bg-[#94a3b8] text-white rounded-tl rounded-bl px-3 py-1" type="button">
-       Approved products
-      </button>
-      <button class="bg-white border border-gray-300 border-l-0 rounded-tr rounded-br px-3 py-1 text-[#475569]" type="button">
-       Under Review products
-      </button>
-      <button class="bg-white border border-gray-300 border-l-0 rounded-tr rounded-br px-3 py-1 text-[#475569]" type="button">
-       Rejected projects
-      </button>
+     <div class="flex space-x-4 mb-6 justify-center items-center">
+        <a href="{% url 'view_products' %}?status=approved" class="px-4 py-2 rounded {% if current_status == 'approved' %}bg-[#4C888E] text-white{% else %}bg-gray-200{% endif %}">Approved Products</a>
+        <a href="{% url 'view_products' %}?status=pending" class="px-4 py-2 rounded {% if current_status == 'pending' %}bg-[#4C888E] text-white{% else %}bg-gray-200{% endif %}">Under Review products</a>
+        <a href="{% url 'view_products' %}?status=rejected" class="px-4 py-2 rounded {% if current_status == 'rejected' %}bg-[#4C888E] text-white{% else %}bg-gray-200{% endif %}">Rejected products</a>
      </div>
      <!-- Product Cards -->
      <div class="space-y-6">
       <!-- Product Card 1 -->
+       {% if products %}
        {% for product in products %}
       <article class="border border-gray-300 rounded-md p-4 flex flex-col md:flex-row md:space-x-6">
        <div class="flex flex-col items-center mb-4 md:mb-0">
@@ -152,6 +147,9 @@
        </div>
       </article>
       {% endfor %}
+      {% else %}
+      <p class="text-center text-[#475569]">No products</p>
+      {% endif %}
      </div>
     </section>
 </main>
