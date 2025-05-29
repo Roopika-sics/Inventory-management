@@ -46,32 +46,54 @@
     <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
     <span>Dashboard</span>
   </a>
+
   <a href="{% url 'seller_profile' %}" class="flex items-center space-x-3 hover:text-[#4a7a82]">
     <i data-lucide="circle-user" class="w-5 h-5"></i>
     <span>Profile</span>
   </a>
+
+  <!-- My Products with dropdown toggle -->
+  <div>
+    <button onclick="toggleDropdown()" class="flex items-center w-full space-x-3 hover:text-[#4a7a82] focus:outline-none">
+      <i data-lucide="package" class="w-5 h-5"></i>
+      <span>My Products</span>
+      <!-- <i class="fas fa-chevron-down ml-auto text-xs"></i> -->
+    </button>
+
+    <div id="productDropdown" class="mt-2 ml-6 space-y-2 hidden">
+      <a href="{% url 'add_product' %}" class="block hover:text-[#4a7a82]">Add Product</a>
+      <a href="" class="block hover:text-[#4a7a82]">View All Products</a>
+    </div>
+  </div>
+
   <a href="#" class="flex items-center space-x-3 hover:text-[#4a7a82]">
-    <i data-lucide="users" class="w-5 h-5"></i>
-    <span>My products</span>
-  </a>
-  <a href="#" class="flex items-center space-x-3 hover:text-[#4a7a82]">
-    <i data-lucide="users" class="w-5 h-5"></i>
+    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
     <span>Orders</span>
   </a>
-  <a href="" class="flex items-center space-x-3 hover:text-[#4a7a82]">
-    <i data-lucide="users" class="w-5 h-5"></i>
+
+  <a href="#" class="flex items-center space-x-3 hover:text-[#4a7a82]">
+    <i data-lucide="trending-up" class="w-5 h-5"></i>
     <span>Best selling products</span>
   </a>
+
   <a href="{% url 'logout' %}" class="flex items-center space-x-3 hover:text-[#4a7a82]">
     <i data-lucide="log-out" class="w-5 h-5"></i>
     <span>Log out</span>
   </a>
 </nav>
 
+
 <script>
   lucide.createIcons();
 </script>
+<script>
+  function toggleDropdown() {
+    const dropdown = document.getElementById("productDropdown");
+    dropdown.classList.toggle("hidden");
+  }
 
+  lucide.createIcons();
+</script>
 {% block content %}
 
 {% endblock %}
