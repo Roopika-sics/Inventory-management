@@ -1,0 +1,10 @@
+
+<h2>Product Rejection</h2>
+<p>Enter the reason for rejection</p>
+
+<form method="POST">
+  {% csrf_token %}
+  <textarea name="reason" rows="5" cols="50" placeholder="Write reason here..." required></textarea>
+  <br>
+  <button type="submit" class="btn btn-primary">Send</button>
+</form>

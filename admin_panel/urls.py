@@ -12,5 +12,9 @@ urlpatterns = [
     path('seller/reject/<int:seller_id>/', views.seller_reject_reason, name='seller_reject_reason'),
     path('add_category/', views.add_category, name='add_category'),
 
+    path('admin/pending-products/', views.view_pending_products, name='view_pending_products'),
+    path('admin/approve-product/<int:product_id>/', views.approve_product, name='approve_product'),
+    path('admin/reject-product/<int:product_id>/', views.reject_product, name='reject_product'),
+
 
 ]
