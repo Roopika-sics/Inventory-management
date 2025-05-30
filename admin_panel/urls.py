@@ -15,6 +15,7 @@ urlpatterns = [
     path('manage_products/', views.manage_products, name='manage_products'),
     path('admin/approve-product/<int:product_id>/', views.approve_product, name='approve_product'),
     path('admin/reject-product/<int:product_id>/', views.reject_product, name='reject_product'),
+    path('low_stock_products/', views.low_stock_products, name='low_stock_products'),
 
     
 

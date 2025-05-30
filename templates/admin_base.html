@@ -89,10 +89,20 @@
     <i data-lucide="users" class="w-5 h-5"></i>
     <span>Sellers</span>
   </a>
-  <a href="{% url 'manage_products' %}" class="flex items-center space-x-3 hover:text-[#4a7a82]">
-    <i data-lucide="package" class="w-5 h-5"></i>
-    <span>Manage products</span>
-  </a>
+  <div>
+    <button onclick="toggleDropdown()" class="flex items-center w-full space-x-3 hover:text-[#4a7a82] focus:outline-none">
+      <i data-lucide="package" class="w-5 h-5"></i>
+      <span>Manage Products</span>
+      <!-- <i class="fas fa-chevron-down ml-auto text-xs"></i> -->
+    </button>
+
+    <div id="productDropdown" class="mt-2 ml-6 space-y-2 hidden">
+      <a href="{% url 'manage_products' %}?status=pending" class="block hover:text-[#4a7a82]">product requests</a>
+      <a href="{% url 'manage_products' %}?status=approved" class="block hover:text-[#4a7a82]">approved products</a>
+      <a href="{% url 'low_stock_products' %}?status=low_stock" class="block hover:text-[#4a7a82]">low stock products</a>
+      <a href="{% url 'low_stock_products' %}?status=out_of_stock" class="block hover:text-[#4a7a82]">stock out products</a>
+    </div>
+  </div>
   <a href="#" class="flex items-center space-x-3 hover:text-[#4a7a82]">
     <i data-lucide="file-text" class="w-5 h-5"></i>
     <span>Orders</span>
@@ -127,7 +137,14 @@
 {% endblock %}
 
 
-    
+  <script>
+  function toggleDropdown() {
+    const dropdown = document.getElementById("productDropdown");
+    dropdown.classList.toggle("hidden");
+  }
+
+  lucide.createIcons();
+</script> 
 </body>
 
 </html>

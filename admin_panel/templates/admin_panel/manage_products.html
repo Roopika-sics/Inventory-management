@@ -69,12 +69,13 @@
                                 </div>
                             </div>
                         </div>
-                        
+                        {% if product.status == 'pending' %}
                         <div class="flex items-center justify-center mt-6 space-x-4">
                             <a href="{% url 'approve_product' product.id %}" class="bg-green-500 text-white px-6 py-2 !rounded-button whitespace-nowrap hover:bg-green-600 transition">Approve</a>
                             <span class="text-gray-500">or</span>
                             <a href="{% url 'reject_product' product.id %}" class="bg-red-500 text-white px-6 py-2 !rounded-button whitespace-nowrap hover:bg-red-600 transition">Reject</a>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
                 {% empty %}

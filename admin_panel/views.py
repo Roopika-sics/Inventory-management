@@ -102,5 +102,19 @@ def reject_product(request, product_id):
     return render(request, 'admin_panel/reject_reason.html', {'product': product})
 
 def manage_products(request):
-    products = Product.objects.filter(status='pending')
+    status = request.GET.get('status')
+    if status:
+        products = Product.objects.filter(status=status)
+    else:
+        products = Product.objects.filter(seller=request.user)
     return render(request, 'admin_panel/manage_products.html', {'products': products})
+
+def low_stock_products(request):
+    status=request.GET.get('status')
+    if status=='low_stock':
+        low_stock_products = Product.objects.filter(stock__lt=10, stock__gt=0)
+    elif status=='out_of_stock':
+        low_stock_products = Product.objects.filter(stock=0)
+    else:
+        low_stock_products = Product.objects.filter(stock__lt=10)
+    return render(request, 'admin_panel/low_stock_products.html', {'low_stock_products': low_stock_products})
