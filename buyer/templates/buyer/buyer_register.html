@@ -1,24 +1,38 @@
-<!-- templates/buyer_register.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buyer Registration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+        }
+    </style>
 </head>
-<body>
-    <h2>Buyer Registration</h2>
-    {% if messages %}
-        {% for message in messages %}
-            <p style="color:red">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Name" required><br>
-        <input type="email" name="email" placeholder="Email" required><br>
-        <input type="text" name="phone_number" placeholder="Phone Number" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <input type="password" name="confirm_password" placeholder="Confirm Password" required><br>
-        <button type="submit">Register</button>
-    </form>
+<body class="bg-white text-gray-900 flex justify-center items-center min-h-screen">
+    <div class="max-w-md w-full bg-[#4a8287] rounded-lg shadow-md p-8">
+        <h2 class="text-2xl font-semibold text-white text-center mb-6">Buyer Registration</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="text-red-500 text-center">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Name" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <input type="email" name="email" placeholder="Email" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <input type="text" name="phone_number" placeholder="Phone Number" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <input type="password" name="password" placeholder="Password" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <input type="password" name="confirm_password" placeholder="Confirm Password" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <button type="submit" class="w-full bg-white text-[#4a8287] py-2 rounded-lg hover:bg-teal-700 transition-colors">Sign Up</button>
+        </form>
+        <p class="text-white text-sm mt-4">
+            Already registered? <a href="{% url 'login' %}" class="text-primary hover:underline">Sign in</a>
+        </p>
+    </div>
 </body>
 </html>
+

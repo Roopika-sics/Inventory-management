@@ -11,6 +11,7 @@ class DeliveryAgent(models.Model):
     city = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
     pincode = models.CharField(max_length=6)
+    own_vehicle = models.BooleanField(default=False)
     licence_number = models.CharField(max_length=100)
     licence_expiry_date = models.DateField()
     driving_licence = models.ImageField(upload_to='driving_licences/')
