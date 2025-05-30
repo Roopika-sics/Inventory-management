@@ -94,8 +94,8 @@
             <td class="pr-2 font-semibold">
              status
             </td>
-            <td class="text-[#22c55e] font-semibold">
-             Approved
+            <td class="text-[#22c55e] font-semibold {% if product.status == 'approved' %} text-[#22c55e] {% else %} text-[#ef4444] {% endif %} ">
+             {{product.status}}
             </td>
            </tr>
            <tr>
@@ -103,7 +103,7 @@
              Date listed
             </td>
             <td>
-             16-8-2025,2 pm
+             {{product.created_at|date:"d-m-Y"}}
             </td>
            </tr>
            <tr>

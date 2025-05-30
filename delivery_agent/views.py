@@ -38,7 +38,7 @@ def delivery_agent_register(request):
             driving_licence=driving_licence
         )
 
-        return redirect('landing_page')
+        return redirect('login')
 
     return render(request, 'delivery_agent/agent_register.html')
 

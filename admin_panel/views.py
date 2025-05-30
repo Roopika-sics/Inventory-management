@@ -81,9 +81,6 @@ def add_category(request):
         return redirect('add_category')
     return render(request, 'admin_panel/add_category.html', {'categories': categories})
 
-def view_pending_products(request):
-    products = Product.objects.filter(status='pending')
-    return render(request, 'admin_panel/product_requests.html', {'products': products})
 
 def approve_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -91,7 +88,7 @@ def approve_product(request, product_id):
     product.rejection_reason = None
     product.save()
     messages.success(request, 'Product approved successfully.')
-    return redirect('view_pending_products')
+    return redirect('manage_products')
 
 def reject_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -101,5 +98,9 @@ def reject_product(request, product_id):
         product.rejection_reason = reason
         product.save()
         messages.success(request, 'Product rejected with reason.')
-        return redirect('view_pending_products')
+        return redirect('manage_products')
     return render(request, 'admin_panel/reject_reason.html', {'product': product})
+
+def manage_products(request):
+    products = Product.objects.filter(status='pending')
+    return render(request, 'admin_panel/manage_products.html', {'products': products})
