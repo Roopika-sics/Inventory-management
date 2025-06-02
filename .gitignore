@@ -1,8 +1,10 @@
-db.sqlite3
-# Ignore compiled Python files
+# Ignore Python cache
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-.pyc
-media
+*.py[cod]
+
+# Ignore all Django migration files except __init__.py
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# Ignore SQLite database (optional)
+db.sqlite3
