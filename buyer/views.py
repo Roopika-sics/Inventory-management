@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from accounts.models import User
-from .models import Buyer
+from .models import Buyer, Address
 from django.contrib import messages
 from categories.models import Category  
 from products.models import Product, CartItem, Order, OrderItem, ProductVariant, ProductAttribute, ProductAttributeValue, Invoice
@@ -72,8 +72,8 @@ def get_user_recommendations(user):
 @login_required
 @never_cache
 def buyer_home(request):
-    smartphones = Product.objects.filter(category__name='Smart Phone')
-    smart_wantchs = Product.objects.filter(category__name='Smart Watches')
+    smartphones = Product.objects.filter(category__name='Smart Phone', status='approved')
+    smart_wantchs = Product.objects.filter(category__name='Smart Watches', status='approved')
     categories = Category.objects.all()
     query = request.GET.get('q', '')
     search_results = Product.objects.filter(
@@ -190,18 +190,27 @@ def place_order(request):
     if not cart_items.exists():
         return redirect('cart')
 
+    buyer = request.user.buyer_profile
+    default_address = buyer.addresses.filter(is_default=True).first()
+
     if request.method == 'POST':
-        address = request.POST.get('address')
+        if not default_address:
+            messages.error(request, "No default address set.")
+            return redirect('address_list')
+
         total = sum(item.product.base_price * item.quantity for item in cart_items)
-        
-       
+
         for item in cart_items:
             if item.quantity > item.product.stock:
                 messages.error(request, f"Not enough stock for {item.product.name}.")
                 return redirect('cart')
 
-        order = Order.objects.create(user=request.user, delivery_address=address, total_price=total)
-        
+        order = Order.objects.create(
+            user=request.user,
+            delivery_address=default_address,
+            total_price=total
+        )
+
         for item in cart_items:
             OrderItem.objects.create(
                 order=order,
@@ -209,22 +218,20 @@ def place_order(request):
                 quantity=item.quantity,
                 price=item.product.base_price
             )
-            
             item.product.stock -= item.quantity
             item.product.save()
-        
+
         cart_items.delete()
 
-        # Create invoice
-        Invoice.objects.create(
-            order=order,
-            invoice_id=str(uuid.uuid4())[:8].upper(),  # Generate unique invoice ID
-        )
-
+        Invoice.objects.create(order=order, invoice_id=str(uuid.uuid4())[:8].upper())
         return render(request, 'buyer/order_success.html', {'order': order})
 
     total_price = sum(item.product.base_price * item.quantity for item in cart_items)
-    return render(request, 'buyer/place_order.html', {'cart_items': cart_items, 'total_price': total_price})
+    return render(request, 'buyer/place_order.html', {
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'default_address': default_address
+    })
 
 def view_invoice(request, order_id):
     order = get_object_or_404(Order, pk=order_id, user=request.user)
@@ -350,3 +357,84 @@ def add_review(request, product_id):
         form = ReviewForm()
 
     return render(request, 'buyer/add_review.html', {'product': product, 'form': form})
+
+@login_required
+def add_address(request):
+    if request.method == "POST":
+        buyer = request.user.buyer_profile
+        name = request.POST.get('name')
+        phone = request.POST.get('phone_number')
+        street = request.POST.get('street_address')
+        apartment = request.POST.get('apartment')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        zip_code = request.POST.get('zip_code')
+        is_default = bool(request.POST.get('is_default'))
+
+        if is_default:
+            buyer.addresses.update(is_default=False)
+
+        Address.objects.create(
+            buyer=buyer,
+            name=name,
+            phone_number=phone,
+            street_address=street,
+            apartment=apartment,
+            city=city,
+            state=state,
+            zip_code=zip_code,
+            is_default=is_default
+        )
+
+        return redirect('address_list')
+
+    return render(request, 'buyer/add_address.html')
+
+@login_required
+def edit_address(request, address_id):
+    address = get_object_or_404(Address, id=address_id, buyer=request.user.buyer_profile)
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        street_address = request.POST.get('street_address')
+        apartment = request.POST.get('apartment')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        zip_code = request.POST.get('zip_code')
+
+        if not all([name, phone_number, street_address, city, state, zip_code]):
+            messages.error(request, "Please fill in all required fields.")
+            return redirect('edit_address', address_id=address.id)
+
+        address.name = name
+        address.phone_number = phone_number
+        address.street_address = street_address
+        address.apartment = apartment
+        address.city = city
+        address.state = state
+        address.zip_code = zip_code
+        address.save()
+
+        messages.success(request, "Address updated successfully.")
+        return redirect('address_list')
+
+    return render(request, 'buyer/edit_address.html', {'address': address})
+
+@login_required
+def address_list(request):
+    buyer = request.user.buyer_profile
+    addresses = buyer.addresses.all()
+    return render(request, 'buyer/address_list.html', {'addresses': addresses})
+
+@login_required
+def set_default_address(request, address_id):
+    buyer = request.user.buyer_profile
+    buyer.addresses.update(is_default=False)
+    Address.objects.filter(id=address_id, buyer=buyer).update(is_default=True)
+    return redirect('address_list')
+
+@login_required
+def delete_address(request, address_id):
+    Address.objects.filter(id=address_id, buyer=request.user.buyer_profile).delete()
+    return redirect('address_list')

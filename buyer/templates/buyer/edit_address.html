@@ -1,0 +1,15 @@
+{% extends './buyer_base.html' %}
+{% block content %}
+<h2>Edit Address</h2>
+<form method="post">
+    {% csrf_token %}
+    <label>Name: <input type="text" name="name" value="{{ address.name }}"></label><br>
+    <label>Phone: <input type="text" name="phone_number" value="{{ address.phone_number }}"></label><br>
+    <label>Street: <input type="text" name="street_address" value="{{ address.street_address }}"></label><br>
+    <label>Apartment: <input type="text" name="apartment" value="{{ address.apartment }}"></label><br>
+    <label>City: <input type="text" name="city" value="{{ address.city }}"></label><br>
+    <label>State: <input type="text" name="state" value="{{ address.state }}"></label><br>
+    <label>ZIP: <input type="text" name="zip_code" value="{{ address.zip_code }}"></label><br>
+    <button type="submit">Update</button>
+</form>
+{% endblock %}

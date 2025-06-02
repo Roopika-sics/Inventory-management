@@ -3,6 +3,10 @@ from .models import Seller
 from accounts.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
+from django.contrib import messages
+from products.models import Product
+from categories.models import Category
+from django.shortcuts import get_object_or_404
 
 def seller_registration(request):
     if request.method == "POST":
@@ -32,7 +36,8 @@ def seller_registration(request):
             validation_document=validation_doc
         )
 
-        return redirect('landing_page')
+        messages.success(request, "Registration successful! Please log in.")
+        return redirect('login')
 
     return render(request, 'seller/seller_registration.html')
 
@@ -71,3 +76,45 @@ def edit_seller_profile(request):
         return redirect('seller_profile')
 
     return render(request, 'seller/edit_seller_pro.html', {'seller': seller})
+
+def add_product(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        brand_name = request.POST.get('brand_name')
+        model_number = request.POST.get('model_number')
+        category_id = request.POST.get('category')
+        sub_category = request.POST.get('sub_category')
+        base_price = request.POST.get('base_price')
+        discount = request.POST.get('discount')
+        image = request.FILES.get('image')
+        stock = request.POST.get('stock')
+
+        category = get_object_or_404(Category, id=category_id)
+
+        product = Product.objects.create(
+            seller=request.user,
+            name=name,
+            description=description,
+            brand_name=brand_name,
+            model_number=model_number,
+            category=category,
+            sub_category=sub_category,
+            base_price=base_price,
+            discount=discount,
+            image=image,
+            stock=stock
+        )
+        return redirect('seller_dashboard')
+    
+    categories = Category.objects.all()
+    return render(request, 'seller/add_product.html', {'categories': categories})
+
+def view_products(request):
+    status=request.GET.get('status')
+    print(status)
+    if status:
+        products = Product.objects.filter(seller=request.user, status=status)
+    else:
+        products = Product.objects.filter(seller=request.user)
+    return render(request, 'seller/view_products.html', {'products': products, 'current_status': status or 'all'})

@@ -17,7 +17,7 @@ def user_login(request):
 
             if user.user_type == 'admin':
                 return redirect('admin_dashboard')
-            elif user.user_type == 'seller':
+            elif user.user_type == 'seller' and user.seller_profile.is_approved == True:
                 return redirect('seller_dashboard')
             elif user.user_type == 'user':
                 return redirect('user_dashboard')
@@ -26,7 +26,8 @@ def user_login(request):
             elif user.user_type == 'delivery_agent':
                 return redirect('delivery_agent_home')
             else:
-                return redirect('home')
+                messages.error(request, "Not approved yet")
+                return redirect('login')
         else:
             messages.error(request, "Invalid username or password")
 

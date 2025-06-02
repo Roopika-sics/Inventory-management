@@ -6,7 +6,16 @@
     {% csrf_token %}
     <div class="mb-4">
         <label for="address" class="block font-medium">Delivery Address:</label>
-        <textarea name="address" id="address" rows="3" class="w-full border p-2" required></textarea>
+       
+           {{default_address.name}}<br>
+           {{default_address.phone_number}}<br>
+           {{default_address.street_address}}<br>
+           {{default_address.apartment}}<br>
+           {{default_address.city}}<br>
+           {{default_address.state}}<br>
+           {{default_address.zip_code}}<br>
+           <a href="{% url 'address_list' %}">Change Address</a>
+    
     </div>
 
     <h3 class="text-xl font-medium mb-2">Your Items:</h3>

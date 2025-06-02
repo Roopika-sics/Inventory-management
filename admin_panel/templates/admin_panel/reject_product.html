@@ -1,0 +1,8 @@
+<h2>Reject Product: {{ product.name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    <label>Reason for rejection:</label>
+    <textarea name="rejection_reason" required></textarea>
+    <br><br>
+    <button type="submit">Submit</button>
+</form>

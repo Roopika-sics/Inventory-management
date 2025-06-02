@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Product</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+    <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-5xl">
+        <div class="bg-teal-600 w-full h-12 flex items-center justify-start rounded-t-lg">
+            <a href="{% url 'view_products' %}" class="text-white ml-4"><i class="fas fa-arrow-left"></i></a>
+        </div>    
+        <h2 class="text-2xl font-semibold text-gray-700 mb-6">Seller Add New Product</h2>
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Sell online with Sentimart</h3>
+        <h4 class="text-lg font-semibold text-gray-600 mb-4">Add New Products</h4>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="flex gap-4">
+                <!-- Left Section -->
+                <div class="bg-gray-50 p-4 rounded-lg flex-1">
+                    <h5 class="text-lg font-semibold text-gray-600 mb-4">Basic Product Information</h5>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Upload Image</label>
+                        <div class="border-dashed border-2 border-gray-300 p-10 text-center cursor-pointer relative">
+                            <input type="file" name="image" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
+                            <span class="text-gray-500">Drag and drop or click to upload</span>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Product Name</label>
+                        <input type="text" name="name" placeholder="Enter product name" class="border border-gray-300 rounded w-full p-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Product Category</label>
+                        <select name="category" class="border border-gray-300 rounded w-full p-2">
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Product Subcategory</label>
+                        <input type="text" name="sub_category" placeholder="Enter product sub category" class="border border-gray-300 rounded w-full p-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Brand Name</label>
+                        <input type="text" name="brand_name" placeholder="Enter Brand name" class="border border-gray-300 rounded w-full p-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Model Number</label>
+                        <input type="text" name="model_number" placeholder="Enter model name" class="border border-gray-300 rounded w-full p-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Product Description</label>
+                        <textarea name="description" placeholder="Enter product Description" class="border border-gray-300 rounded w-full p-2"></textarea>
+                    </div>
+                </div>
+                <!-- Right Section -->
+                <div class="bg-gray-50 p-4 rounded-lg flex-1">
+                    <h5 class="text-lg font-semibold text-gray-600 mb-4">Pricing Information</h5>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Product Base Price</label>
+                        <input type="text" name="base_price" placeholder="Enter base price" class="border border-gray-300 rounded w-full p-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Discount Percentage</label>
+                        <input type="text" name="discount" placeholder="Enter Discount percentage" class="border border-gray-300 rounded w-full p-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Stock</label>
+                        <input type="number" name="stock" placeholder="Enter stock" class="border border-gray-300 rounded w-full p-2">
+                    </div>
+                    <button class="bg-teal-600 text-white rounded p-2 w-full hover:bg-teal-700">ADD</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
