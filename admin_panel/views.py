@@ -4,6 +4,7 @@ from buyer.models import Buyer
 from delivery_agent.models import DeliveryAgent
 from categories.models import Category
 from products.models import Product
+from django.contrib import messages
 # Create your views here.
 
 
@@ -80,19 +81,40 @@ def add_category(request):
         return redirect('add_category')
     return render(request, 'admin_panel/add_category.html', {'categories': categories})
 
+
 def approve_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     product.status = 'approved'
     product.rejection_reason = None
     product.save()
-    return redirect('admin_dashboard')
+    messages.success(request, 'Product approved successfully.')
+    return redirect('manage_products')
 
 def reject_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     if request.method == 'POST':
-        reason = request.POST.get('rejection_reason')
+        reason = request.POST.get('reason')
         product.status = 'rejected'
         product.rejection_reason = reason
         product.save()
-        return redirect('admin_dashboard')
-    return render(request, 'admin/reject_product.html', {'product': product})
+        messages.success(request, 'Product rejected with reason.')
+        return redirect('manage_products')
+    return render(request, 'admin_panel/reject_reason.html', {'product': product})
+
+def manage_products(request):
+    status = request.GET.get('status')
+    if status:
+        products = Product.objects.filter(status=status)
+    else:
+        products = Product.objects.filter(seller=request.user)
+    return render(request, 'admin_panel/manage_products.html', {'products': products})
+
+def low_stock_products(request):
+    status=request.GET.get('status')
+    if status=='low_stock':
+        low_stock_products = Product.objects.filter(stock__lt=10, stock__gt=0)
+    elif status=='out_of_stock':
+        low_stock_products = Product.objects.filter(stock=0)
+    else:
+        low_stock_products = Product.objects.filter(stock__lt=10)
+    return render(request, 'admin_panel/low_stock_products.html', {'low_stock_products': low_stock_products})

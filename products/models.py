@@ -25,6 +25,8 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=0)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     rejection_reason = models.TextField(null=True, blank=True) 
+    sku = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     def __str__(self):
 

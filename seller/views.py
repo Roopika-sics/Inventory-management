@@ -7,6 +7,9 @@ from django.contrib import messages
 from products.models import Product
 from categories.models import Category
 from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt  
 
 def seller_registration(request):
     if request.method == "POST":
@@ -112,9 +115,28 @@ def add_product(request):
 
 def view_products(request):
     status=request.GET.get('status')
-    print(status)
     if status:
         products = Product.objects.filter(seller=request.user, status=status)
     else:
         products = Product.objects.filter(seller=request.user)
     return render(request, 'seller/view_products.html', {'products': products, 'current_status': status or 'all'})
+
+@require_POST
+@csrf_exempt
+def update_stock(request):
+    sku = request.POST.get('sku')
+    new_stock = request.POST.get('new_stock')
+
+    if not sku or new_stock is None:
+        return JsonResponse({'success': False, 'message': 'Missing data'})
+
+    try:
+        new_stock = int(new_stock)
+        product = Product.objects.get(sku=sku)
+        product.stock = new_stock
+        product.save()
+        return JsonResponse({'success': True, 'message': 'Stock updated successfully'})
+    except Product.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Product not found'})
+    except ValueError:
+        return JsonResponse({'success': False, 'message': 'Invalid stock value'})

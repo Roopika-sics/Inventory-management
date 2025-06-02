@@ -21,7 +21,8 @@ def delivery_agent_register(request):
         licence_number = request.POST.get('licencenumber')
         licence_expiry_date = request.POST.get('licenceexpirydate')
         driving_licence = request.FILES.get('drivinglicence')
-        password = request.POST.get('password') 
+        password = request.POST.get('password')
+        own_vehicle = request.POST.get('own_vehicle')
 
         user = User.objects.create_user(username=full_name, email=email, password=password)
         user.user_type = 'delivery_agent'
@@ -35,10 +36,11 @@ def delivery_agent_register(request):
             pincode=pincode,
             licence_number=licence_number,
             licence_expiry_date=licence_expiry_date,
-            driving_licence=driving_licence
+            driving_licence=driving_licence,
+            own_vehicle=own_vehicle
         )
 
-        return redirect('landing_page')
+        return redirect('login')
 
     return render(request, 'delivery_agent/agent_register.html')
 

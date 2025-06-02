@@ -1,0 +1,39 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color:red">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+</aside>
+<div class="container mx-auto p-4">
+  {% for product in products %}
+  <div class="flex flex-col md:flex-row bg-white rounded-lg shadow-lg p-4 mb-4">
+    <div class="md:w-1/3">
+      <p class="font-bold text-lg mb-2">Pending Request {{ product.id }}</p>
+      <p class="text-gray-600">Product Category: {{ product.category.name }}</p>
+      <p class="text-gray-600">Sub-category: {{ product.sub_category }}</p>
+      <p class="text-gray-600">Brand: {{ product.brand_name }}</p>
+      <p class="text-gray-600">Request Date: {{ product.created_at|date:"d-m-Y" }}</p>
+      <p class="text-gray-600"><strong>Description:</strong><br>{{ product.description }}</p>
+    </div>
+    <div class="md:w-2/3 flex items-center justify-center">
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" class="h-48 w-auto">
+      <div class="ml-4">
+        <p class="font-bold text-lg mb-2">{{ product.name }}</p>
+        <p class="text-gray-600">Price: ₹{{ product.base_price }}</p>
+        <p class="text-gray-600">Discount: {{ product.discount }}%</p>
+      </div>
+    </div>
+    <div class="mt-4 md:mt-0 flex items-center justify-end">
+      <a href="{% url 'approve_product' product.id %}" class="btn btn-success">Approve</a>
+      <a href="{% url 'reject_product' product.id %}" class="btn btn-danger ml-2">Reject</a>
+    </div>
+  </div>
+  <hr>
+  {% empty %}
+  <p class="text-center text-gray-600">No pending products.</p>
+  {% endfor %}
+</div>
+{% endblock %}
